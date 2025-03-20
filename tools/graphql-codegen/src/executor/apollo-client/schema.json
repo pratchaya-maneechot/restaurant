@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "ApolloClient executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "generatedPath": {
+      "type": "string",
+      "description": "Path where the generated files will be stored.",
+      "x-prompt": "Enter the path for the generated files:"
+    },
+    "documentPath": {
+      "type": "string",
+      "description": "Path to the document files to be processed.",
+      "x-prompt": "Enter the path to the document files:"
+    }
+  },
+  "required": ["generatedPath", "documentPath"]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "shared-protos",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared-protos/src",
+  "projectType": "library",
+  "tags": ["proto", "shared"],
+  "targets": {
+    "codegen": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sh ./src/codegen.sh",
+        "cwd": "libs/shared-protos"
+      }
+    }
+  }
+}

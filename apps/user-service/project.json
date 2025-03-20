@@ -1,0 +1,94 @@
+{
+  "name": "user-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/user-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/user-service",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/user-service/src/main.ts",
+        "tsConfig": "apps/user-service/tsconfig.app.json",
+        "assets": ["libs/shared-protos/src/protos/**/*.proto"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "user-service:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "user-service:build:development"
+        },
+        "production": {
+          "buildTarget": "user-service:build:production"
+        }
+      }
+    },
+    "db:generate": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "local",
+      "options": {
+        "command": "drizzle-kit generate --config=./src/infrastructure/db_drizzle/config.ts",
+        "cwd": "apps/user-service"
+      },
+      "configurations": {
+        "local": {}
+      }
+    },
+    "db:migrate": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "local",
+      "options": {
+        "command": "drizzle-kit migrate --config=./src/infrastructure/db_drizzle/config.ts",
+        "cwd": "apps/user-service"
+      },
+      "configurations": {
+        "local": {}
+      }
+    },
+    "db:initial": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tsconfig.app.json ./src/infrastructure/db_drizzle/seeds/initial.ts",
+        "cwd": "apps/user-service"
+      }
+    },
+    "db:reset": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node ./src/infrastructure/db_drizzle/seeds/reset.ts",
+        "cwd": "apps/user-service"
+      }
+    }
+  }
+}

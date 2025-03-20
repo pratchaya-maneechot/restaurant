@@ -1,0 +1,6 @@
+import { IAppContext } from '@restaurant/core';
+
+export interface AppContext extends IAppContext {}
+export const createContext = (appCtx: IAppContext): AppContext => {
+  return appCtx;
+};

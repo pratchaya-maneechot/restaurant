@@ -1,0 +1,77 @@
+name: SSKRU - Deploy Development
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-dev'
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Code generate
+        run: pnpm exec nx run-many -t codegen
+
+      - name: load .env file
+        run: |
+          echo "${{ secrets.ENV_WEBSITE_VARS }}" > apps/website/.env
+
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+      - name: Setup Google Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Set up docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+
+      - name: Package docker image
+        run: npx nx run-many --target=docker-build --registry=asia-southeast1-docker.pkg.dev/sskru-development/sskru --tag=${{ steps.meta.outputs.version }} --skip-nx-cache=true
+
+  deploy:
+    needs: [package]
+    runs-on: ubuntu-latest
+    env:
+      TF_WORKSPACE: development
+      DB_HOST: ${{ vars.DB_HOST }}
+      DB_PORT: ${{ vars.DB_PORT }}
+      DB_USERNAME: ${{ vars.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_SSL_REQUIRED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Deploy database
+        run: pnpm exec nx run-many -t db:migrate
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false # default is true, it will add command in output
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - run: terraform init
+        working-directory: infra/terraform
+      - run: terraform apply -auto-approve -input=false
+        working-directory: infra/terraform

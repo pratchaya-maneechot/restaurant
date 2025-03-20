@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package order;
+
+import "user/request.proto";
+import "user/response.proto";
+
+service OrderService {
+  rpc GetUserQuery(GetUserQueryRequest) returns (GetUserQueryResponse);
+}

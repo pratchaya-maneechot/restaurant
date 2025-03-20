@@ -1,0 +1,5 @@
+import { IQuery } from '@restaurant/core';
+
+export class GetStudentsQuery implements IQuery {
+  constructor(public readonly permissionId?: string) {}
+}

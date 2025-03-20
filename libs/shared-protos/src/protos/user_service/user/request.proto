@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package user;
+
+message RegisterUserRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  string role = 4;
+  optional string phone = 5;
+}
+
+message UpdateUserRequest {
+  string user_id = 1;
+  optional string email = 2;
+  optional string password = 3;
+  optional string name = 4;
+  optional string phone = 5;
+}
+
+message DeleteUserRequest {
+  string user_id = 1;
+}

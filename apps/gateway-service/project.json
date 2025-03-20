@@ -1,0 +1,76 @@
+{
+  "name": "gateway-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/gateway-service/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/gateway-service",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/gateway-service/src/main.ts",
+        "tsConfig": "apps/gateway-service/tsconfig.app.json",
+        "assets": [
+          "apps/gateway-service/src/assets",
+          {
+            "input": "apps/gateway-service/src/graphql/typeDefs",
+            "glob": "**/*.graphql",
+            "output": "apps/gateway-service/src/graphql/typeDefs"
+          }
+        ],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "generateLockfile": true,
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "gateway-service:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "gateway-service:build:development"
+        },
+        "production": {
+          "buildTarget": "gateway-service:build:production"
+        }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["build"],
+      "args": ["registry", "tag"],
+      "command": "docker buildx build --platform linux/amd64 --output \"type=image,push=true\" --tag {args.registry}/backend:latest --tag {args.registry}/backend:{args.tag} --build-arg SERVICE_VERSION={args.tag} --file apps/gateway-service/Dockerfile .",
+      "configurations": {
+        "local": {
+          "command": "docker build -f apps/gateway-service/Dockerfile . -t backend"
+        }
+      }
+    }
+  }
+}
