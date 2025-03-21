@@ -1,0 +1,31 @@
+syntax = "proto3";
+package reservation;
+option go_package = "./proto";
+
+service ReservationService {
+  rpc CreateReservation(CreateReservationRequest) returns (CreateReservationResponse) {}
+  rpc GetReservation(GetReservationRequest) returns (GetReservationResponse) {}
+}
+
+message CreateReservationRequest {
+  string reservation_id = 1;
+  string customer_name = 2;
+  string table_id = 3;
+  string date_time = 4; // ISO 8601 format
+}
+
+message CreateReservationResponse {
+  string reservation_id = 1;
+}
+
+message GetReservationRequest {
+  string reservation_id = 1;
+}
+
+message GetReservationResponse {
+  string reservation_id = 1;
+  string customer_name = 2;
+  string table_id = 3;
+  string date_time = 4;
+  string status = 5;
+}

@@ -4,7 +4,7 @@ import {
   RegisterUserResponse,
   UpdateUserResponse,
   UserServiceHandlers,
-} from '@restaurant/shared-protos';
+} from '@restaurant/shared-proto-ts';
 import { z } from 'zod';
 import { RegisterUserCommand, UpdateUserCommand } from '../../../application';
 import { UserModel } from '../../../domain/models';

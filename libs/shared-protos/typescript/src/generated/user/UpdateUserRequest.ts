@@ -1,4 +1,4 @@
-// Original file: /Users/peeter/Desktop/Top/restaurant/libs/shared-protos/src/protos/user_service/user/request.proto
+// Original file: /Users/peeter/Desktop/Top/restaurant/libs/shared-protos/_proto/user_service/user/request.proto
 
 export interface UpdateUserRequest {
   userId?: string;

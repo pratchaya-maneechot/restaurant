@@ -1,4 +1,4 @@
-// Original file: /Users/peeter/Desktop/Top/restaurant/libs/shared-protos/src/protos/user_service/service.proto
+// Original file: /Users/peeter/Desktop/Top/restaurant/libs/shared-protos/_proto/user_service/service.proto
 
 import type * as grpc from '@grpc/grpc-js';
 import type { MethodDefinition } from '@grpc/proto-loader';

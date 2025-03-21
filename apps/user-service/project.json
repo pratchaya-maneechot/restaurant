@@ -16,7 +16,7 @@
         "bundle": false,
         "main": "apps/user-service/src/main.ts",
         "tsConfig": "apps/user-service/tsconfig.app.json",
-        "assets": ["libs/shared-protos/src/protos/**/*.proto"],
+        "assets": ["libs/shared-protos/_proto/**/*.proto"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,

@@ -2,9 +2,9 @@
 set -e  # Exit on any error
 
 # Define variables
-PROJECT_ROOT="$(/bin/pwd)"
-OUT_DIR="$PROJECT_ROOT/src/generated"
-PROTO_DIR="$PROJECT_ROOT/src/protos"
+PROJECT_ROOT="$(/bin/pwd)/../_proto"
+OUT_DIR="$(/bin/pwd)/src/generated"
+PROTO_DIR="$PROJECT_ROOT"
 BARREL_FILE="$OUT_DIR/index.ts"
 
 # Ensure output directory exists
