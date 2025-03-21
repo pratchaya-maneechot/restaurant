@@ -48,7 +48,6 @@ func (r *Reservation) Confirm() error {
 	return nil
 }
 
-// Cancel เปลี่ยนสถานะเป็น Canceled
 func (r *Reservation) Cancel() error {
 	if r.Status == StatusCanceled {
 		return errors.New("reservation is already canceled")
@@ -57,7 +56,6 @@ func (r *Reservation) Cancel() error {
 	return nil
 }
 
-// IsAvailable ตรวจสอบว่าการจองยังใช้ได้หรือไม่
 func (r *Reservation) IsAvailable() bool {
 	return r.Status != StatusCanceled && r.DateTime.After(time.Now())
 }

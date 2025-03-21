@@ -19,6 +19,11 @@ func NewInMemoryReservationRepository() *InMemoryReservationRepository {
 	}
 }
 
+func ProvideReservationRepository() domain.ReservationRepository {
+	repo := NewInMemoryReservationRepository()
+	return repo
+}
+
 func (r *InMemoryReservationRepository) Save(ctx context.Context, reservation *domain.Reservation) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()

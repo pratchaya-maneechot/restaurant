@@ -1,26 +1,26 @@
 package main
 
 import (
-	"apps/reservation-service/internal/domain"
-	"fmt"
-	"time"
+	"apps/reservation-service/internal/application"
+	"apps/reservation-service/internal/interfaces/grpc"
+	"context"
+	"log"
+	"net"
 )
 
 func main() {
-	reservation, err := domain.NewReservation("res-001", "John Doe", "table-01", time.Now().Add(24*time.Hour))
+	ctx := context.Background()
+	app := application.InitializeApp()
+
+	// gRPC Server
+	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		fmt.Println("Error:", err)
-		return
+		log.Fatalf("failed to listen: %v", err)
 	}
-
-	event := domain.NewReservationCreated(reservation)
-	fmt.Printf("Event: %+v\n", event)
-
-	if err := reservation.Cancel(); err != nil {
-		fmt.Println("Error:", err)
-		return
+	grpcServer := grpc.NewServer()
+	pb.RegisterReservationServiceServer(grpcServer, grpc.NewReservationServer(app.CommandBus, app.QueryBus))
+	log.Println("gRPC server running on :50051")
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
-
-	cancelEvent := domain.NewReservationCanceled(reservation)
-	fmt.Printf("Cancel Event: %+v\n", cancelEvent)
 }

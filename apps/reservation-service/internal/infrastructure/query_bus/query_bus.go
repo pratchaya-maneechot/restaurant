@@ -1,4 +1,4 @@
-package querybus
+package query_bus
 
 import (
 	"context"
