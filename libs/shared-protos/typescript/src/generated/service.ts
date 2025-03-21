@@ -2,9 +2,9 @@ import type * as grpc from '@grpc/grpc-js';
 import type { MessageTypeDefinition } from '@grpc/proto-loader';
 
 import type {
-  OrderServiceClient as _order_OrderServiceClient,
-  OrderServiceDefinition as _order_OrderServiceDefinition,
-} from './order/OrderService';
+  ReservationServiceClient as _reservation_ReservationServiceClient,
+  ReservationServiceDefinition as _reservation_ReservationServiceDefinition,
+} from './reservation/ReservationService';
 import type {
   UserServiceClient as _user_UserServiceClient,
   UserServiceDefinition as _user_UserServiceDefinition,
@@ -15,11 +15,13 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 };
 
 export interface ProtoGrpcType {
-  order: {
-    GetUserQueryRequest: MessageTypeDefinition;
-    GetUserQueryResponse: MessageTypeDefinition;
-    OrderService: SubtypeConstructor<typeof grpc.Client, _order_OrderServiceClient> & {
-      service: _order_OrderServiceDefinition;
+  reservation: {
+    CreateReservationRequest: MessageTypeDefinition;
+    CreateReservationResponse: MessageTypeDefinition;
+    GetReservationRequest: MessageTypeDefinition;
+    GetReservationResponse: MessageTypeDefinition;
+    ReservationService: SubtypeConstructor<typeof grpc.Client, _reservation_ReservationServiceClient> & {
+      service: _reservation_ReservationServiceDefinition;
     };
   };
   user: {

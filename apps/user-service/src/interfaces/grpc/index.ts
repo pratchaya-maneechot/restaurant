@@ -1,5 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
-import { PROTOS, UserServiceHandlers } from '@restaurant/shared-protos';
+import { PROTOS, UserServiceHandlers } from '@restaurant/shared-proto-ts';
 import { TYPES } from '../../configs/types';
 import { initializes } from '../../initialize';
 

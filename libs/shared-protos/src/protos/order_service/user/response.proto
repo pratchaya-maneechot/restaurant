@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package order;
-
-message GetUserQueryResponse {
-  string id = 1;
-  string name = 2;
-}
