@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-package user;
+package user_service;
+option go_package = "user_service/proto";
 
 message RegisterUserRequest {
   string email = 1;
@@ -20,4 +21,21 @@ message UpdateUserRequest {
 
 message DeleteUserRequest {
   string user_id = 1;
+}
+
+message RegisterUserResponse {
+  string user_id = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message UpdateUserResponse {
+  string user_id = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+  string message = 2;
 }

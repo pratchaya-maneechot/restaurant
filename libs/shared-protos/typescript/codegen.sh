@@ -1,16 +1,20 @@
 #!/bin/bash
-set -e  # Exit on any error
+set -e
 
-# Define variables
 PROJECT_ROOT="$(/bin/pwd)/../_proto"
 OUT_DIR="$(/bin/pwd)/src/generated"
 PROTO_DIR="$PROJECT_ROOT"
 BARREL_FILE="$OUT_DIR/index.ts"
+PROTO_FILES="$PROTO_DIR"/**/service.proto
 
-# Ensure output directory exists
 rm -rf $OUT_DIR || true;
 mkdir -p "$OUT_DIR"
-# Generate TypeScript types from proto files
+
+if ! $(pnpm bin)/proto-loader-gen-types --version &> /dev/null; then
+    echo "Installing proto-loader-gen-types..."
+    pnpm add -D @grpc/proto-loader
+fi
+
 $(pnpm bin)/proto-loader-gen-types \
   --longs=String \
   --enums=String \
@@ -18,20 +22,16 @@ $(pnpm bin)/proto-loader-gen-types \
   --oneofs \
   --grpcLib=@grpc/grpc-js \
   --outDir="$OUT_DIR" \
-  "$PROTO_DIR"/**/*.proto  # Handle subdirectories in proto
+  $PROTO_FILES
 
-# Generate barrel file (index.ts) with nested exports
 echo "Generating barrel file at $BARREL_FILE"
-> "$BARREL_FILE"  # Clear or create the barrel file
+> "$BARREL_FILE"
 
-# Function to generate exports for a directory
 generate_exports() {
   local dir="$1"
   find "$dir" -type f -name "*.ts" ! -name "index.ts" | while read -r file; do
-    # Calculate relative path using basename and dirname
-    relative_dir=$(dirname "${file#$OUT_DIR/}")  # Remove OUT_DIR prefix and get directory
+    relative_dir=$(dirname "${file#$OUT_DIR/}")
     filename=$(basename "$file" .ts)
-    # Construct export path, handling root and subdirectories
     if [ "$relative_dir" != "." ]; then
       export_path="./$relative_dir/$filename"
       echo "export * from '$export_path';" >> "$BARREL_FILE"
@@ -41,7 +41,7 @@ generate_exports() {
     fi
   done
 }
-# Generate exports for root lib and subdirectories
+
 generate_exports "$OUT_DIR"
 
 echo "Type generation and barrel export completed."
