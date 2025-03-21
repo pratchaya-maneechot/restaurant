@@ -1,6 +1,6 @@
 syntax = "proto3";
-package reservation;
-option go_package = "./proto";
+package reservation_service;
+option go_package = "reservation_service/proto";
 
 service ReservationService {
   rpc CreateReservation(CreateReservationRequest) returns (CreateReservationResponse) {}

@@ -1,4 +1,4 @@
-**Restaurant System**
+# **Restaurant System**
 
 This project is a microservices-based system designed for restaurant management, point-of-sale (POS), and e-commerce operations. It follows Domain-Driven Design (DDD) principles with Bounded Contexts to ensure modularity, scalability, and maintainability. The system uses an Event-Driven Architecture with Kafka as the message broker for asynchronous communication between services.
 

@@ -5,4 +5,4 @@ import { ProtoGrpcType } from '../generated';
 
 const PROTO_PATH = join(__dirname, '..', '..', '..', '_proto', 'user_service', 'service.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
-export const proto = grpc.loadPackageDefinition(packageDefinition) as unknown as Pick<ProtoGrpcType, 'user'>;
+export const proto = grpc.loadPackageDefinition(packageDefinition) as unknown as Pick<ProtoGrpcType, 'user_service'>;
