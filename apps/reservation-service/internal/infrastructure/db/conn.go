@@ -1,14 +1,25 @@
 package db
 
 import (
+	"apps/reservation-service/internal/configs"
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 func NewDBConn() *pgxpool.Pool {
-	pool, err := pgxpool.New(context.Background(), "postgres://postgres:password@localhost:5432/reservation_db?sslmode=disable")
+	cfg := configs.LoadConfig()
+	connStr := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		cfg.DBUser,
+		cfg.DBPassword,
+		cfg.DBHost,
+		cfg.DBPort,
+		cfg.DBName,
+	)
+	pool, err := pgxpool.New(context.Background(), connStr)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

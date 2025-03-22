@@ -13,7 +13,6 @@ type Config struct {
 	DBUser     string
 	DBPassword string
 	DBName     string
-	ServerPort string
 	APITimeout time.Duration
 }
 
@@ -22,9 +21,8 @@ func LoadConfig() Config {
 		DBHost:     getEnv("DB_HOST", "localhost"),
 		DBPort:     getEnv("DB_PORT", "5432"),
 		DBUser:     getEnv("DB_USER", "admin"),
-		DBPassword: getEnv("DB_PASSWORD", "secret"),
-		DBName:     getEnv("DB_NAME", "mydb"),
-		ServerPort: getEnv("SERVER_PORT", ":8080"),
+		DBPassword: getEnv("DB_PASSWORD", "Hl7FudwaSNzOhhioo0GxlmmMD0LM+I8StQIqJCZ1TPg="),
+		DBName:     getEnv("DB_NAME", "reservation"),
 	}
 
 	timeoutSec, err := strconv.Atoi(getEnv("API_TIMEOUT_SEC", "30"))
