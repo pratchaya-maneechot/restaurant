@@ -29,8 +29,7 @@
     "codegen": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "sh ./codegen.sh",
-        "cwd": "apps/reservation-service"
+        "command": "sh tools/scripts/codegen_wire.sh {projectRoot}/internal/application"
       }
     }
   }

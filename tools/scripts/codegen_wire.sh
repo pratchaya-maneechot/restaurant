@@ -1,10 +1,21 @@
 #!/bin/bash
 set -e
 
-PROJECT_ROOT="$(/bin/pwd)"
-APPLICATION_DIR="$PROJECT_ROOT/internal/application"
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <application_directory>"
+    echo "Example: $0 /path/to/app"
+    exit 1
+fi
+
+APPLICATION_DIR="$1"
+
+if [ ! -d "$APPLICATION_DIR" ]; then
+    echo "Error: Directory '$APPLICATION_DIR' does not exist or is not accessible"
+    exit 1
+fi
 
 cd $APPLICATION_DIR
+
 export PATH=$PATH:$(go env GOPATH)/bin
 
 # Execute wire
