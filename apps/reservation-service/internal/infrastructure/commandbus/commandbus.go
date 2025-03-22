@@ -10,7 +10,7 @@ type Command interface {
 }
 
 type CommandHandler interface {
-	Handle(ctx context.Context, cmd Command) error
+	Handle(ctx context.Context, cmd Command) (any, error)
 }
 
 type CommandBus struct {
@@ -27,10 +27,10 @@ func (b *CommandBus) Register(cmdType string, handler CommandHandler) {
 	b.handlers[cmdType] = handler
 }
 
-func (b *CommandBus) Dispatch(ctx context.Context, cmd Command) error {
+func (b *CommandBus) Dispatch(ctx context.Context, cmd Command) (any, error) {
 	handler, exists := b.handlers[cmd.Type()]
 	if !exists {
-		return fmt.Errorf("no handler for command: %s", cmd.Type())
+		return fmt.Errorf("no handler for command: %s", cmd.Type()), nil
 	}
 	return handler.Handle(ctx, cmd)
 }

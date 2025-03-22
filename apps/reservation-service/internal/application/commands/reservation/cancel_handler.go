@@ -14,13 +14,13 @@ func NewCancelReservationHandler(repo domain.ReservationRepository) *CancelReser
 	return &CancelReservationHandler{repo: repo}
 }
 
-func (h *CancelReservationHandler) Handle(ctx context.Context, cmd defs.CancelReservationCommand) error {
+func (h *CancelReservationHandler) Handle(ctx context.Context, cmd defs.CancelReservationCommand) (any, error) {
 	reservation, err := h.repo.FindByID(ctx, cmd.ReservationID)
 	if err != nil {
-		return err
+		return err, err
 	}
 	if err := reservation.Cancel(); err != nil {
-		return err
+		return err, err
 	}
-	return h.repo.Save(ctx, reservation)
+	return h.repo.Save(ctx, reservation), err
 }

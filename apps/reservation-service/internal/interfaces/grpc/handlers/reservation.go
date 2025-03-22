@@ -35,7 +35,8 @@ func (s *ReservationServer) CreateReservation(ctx context.Context, req *pb.Creat
 		TableID:       req.TableId,
 		DateTime:      dateTime,
 	}
-	if err := s.cmdBus.Dispatch(ctx, cmd); err != nil {
+	_, err = s.cmdBus.Dispatch(ctx, cmd)
+	if err != nil {
 		return nil, err
 	}
 	return &pb.CreateReservationResponse{ReservationId: req.ReservationId}, nil

@@ -10,7 +10,7 @@ type Query interface {
 }
 
 type QueryHandler interface {
-	Handle(ctx context.Context, query Query) (interface{}, error)
+	Handle(ctx context.Context, query Query) (any, error)
 }
 
 type QueryBus struct {

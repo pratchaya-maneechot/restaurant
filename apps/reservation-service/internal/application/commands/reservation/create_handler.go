@@ -16,14 +16,14 @@ func NewCreateReservationHandler(repo domain.ReservationRepository) *CreateReser
 	return &CreateReservationHandler{repo: repo}
 }
 
-func (h *CreateReservationHandler) Handle(ctx context.Context, cmd commandbus.Command) error {
+func (h *CreateReservationHandler) Handle(ctx context.Context, cmd commandbus.Command) (any, error) {
 	input, ok := cmd.(defs.CreateReservationCommand)
 	if !ok {
-		return fmt.Errorf("invalid command type: expected CreateReservationCommand, got %T", cmd)
+		return nil, fmt.Errorf("invalid command type: expected CreateReservationCommand, got %T", cmd)
 	}
 	reservation, err := domain.NewReservation(input.ReservationID, input.CustomerName, input.TableID, input.DateTime)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return h.repo.Save(ctx, reservation)
+	return input.ReservationID, h.repo.Save(ctx, reservation)
 }

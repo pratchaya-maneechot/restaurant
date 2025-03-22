@@ -14,11 +14,11 @@ func NewUpdateReservationHandler(repo domain.ReservationRepository) *UpdateReser
 	return &UpdateReservationHandler{repo: repo}
 }
 
-func (h *UpdateReservationHandler) Handle(ctx context.Context, cmd defs.UpdateReservationCommand) error {
+func (h *UpdateReservationHandler) Handle(ctx context.Context, cmd defs.UpdateReservationCommand) (any, error) {
 	reservation, err := h.repo.FindByID(ctx, cmd.ReservationID)
 	if err != nil {
-		return err
+		return err, err
 	}
 	reservation.DateTime = cmd.DateTime
-	return h.repo.Save(ctx, reservation)
+	return h.repo.Save(ctx, reservation), err
 }

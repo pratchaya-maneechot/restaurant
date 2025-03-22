@@ -14,6 +14,6 @@ func NewGetReservationsHandler(repo domain.ReservationRepository) *GetReservatio
 	return &GetReservationsHandler{repo: repo}
 }
 
-func (h *GetReservationsHandler) Handle(ctx context.Context, query defs.GetReservationsQuery) ([]*domain.Reservation, error) {
+func (h *GetReservationsHandler) Handle(ctx context.Context, query defs.GetReservationsQuery) (interface{}, error) {
 	return h.repo.FindAll(ctx)
 }
