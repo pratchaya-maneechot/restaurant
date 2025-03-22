@@ -1,4 +1,4 @@
-package grpc
+package grpc_handler
 
 import (
 	cmdDef "apps/reservation-service/internal/application/commands/reservation/definitions"

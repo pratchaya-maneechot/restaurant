@@ -5,8 +5,9 @@ package application
 
 import (
 	command_setup "apps/reservation-service/internal/application/commands"
-	command "apps/reservation-service/internal/application/commands/reservation"
+	reservationCmd "apps/reservation-service/internal/application/commands/reservation"
 	query_setup "apps/reservation-service/internal/application/queries"
+	reservationQuery "apps/reservation-service/internal/application/queries/reservation"
 	"apps/reservation-service/internal/infrastructure/command_bus"
 	"apps/reservation-service/internal/infrastructure/query_bus"
 	"apps/reservation-service/internal/infrastructure/repository"
@@ -29,11 +30,17 @@ func NewApp(cmdSetup command_setup.CommandBusSetup, querySetup query_setup.Query
 func InitializeApp() App {
 	wire.Build(
 		repository.ProvideReservationRepository,
-		command.NewCreateReservationHandler,
+		//command handler
+		reservationCmd.NewCreateReservationHandler,
+		//query handler
+		reservationQuery.NewGetReservationHandler,
+		//setup
 		command_setup.NewCommandSetup,
 		query_setup.NewQuerySetup,
+
 		command_bus.NewCommandBus,
 		query_bus.NewQueryBus,
+
 		NewApp,
 	)
 	return App{}

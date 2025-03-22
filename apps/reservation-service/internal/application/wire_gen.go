@@ -10,6 +10,7 @@ import (
 	"apps/reservation-service/internal/application/commands"
 	"apps/reservation-service/internal/application/commands/reservation"
 	"apps/reservation-service/internal/application/queries"
+	"apps/reservation-service/internal/application/queries/reservation"
 	"apps/reservation-service/internal/infrastructure/command_bus"
 	"apps/reservation-service/internal/infrastructure/query_bus"
 	"apps/reservation-service/internal/infrastructure/repository"
@@ -23,7 +24,8 @@ func InitializeApp() App {
 	createReservationHandler := command.NewCreateReservationHandler(reservationRepository)
 	commandBusSetup := command_setup.NewCommandSetup(commandBus, createReservationHandler)
 	queryBus := query_bus.NewQueryBus()
-	queryBusSetup := query_setup.NewQuerySetup(queryBus)
+	getReservationHandler := query.NewGetReservationHandler(reservationRepository)
+	queryBusSetup := query_setup.NewQuerySetup(queryBus, getReservationHandler)
 	app := NewApp(commandBusSetup, queryBusSetup)
 	return app
 }
