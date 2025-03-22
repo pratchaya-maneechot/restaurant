@@ -25,6 +25,13 @@
     },
     "tidy": {
       "executor": "@nx-go/nx-go:tidy"
+    },
+    "codegen": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sh ./codegen.sh",
+        "cwd": "apps/reservation-service"
+      }
     }
   }
 }
