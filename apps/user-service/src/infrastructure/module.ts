@@ -1,6 +1,6 @@
 import { G_TYPES, ICommandBus, IQuery, IQueryBus } from '@restaurant/core-domain';
 import { AsyncContainerModule, interfaces } from 'inversify';
-import { TYPES } from '../configs/types';
+import { TYPES } from '../config/types';
 import { IUserRepository } from '../domain/repositories';
 import { CommandBus } from './command_bus';
 import { QueryBus } from './query_bus';

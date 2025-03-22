@@ -1,7 +1,7 @@
 import { G_TYPES, ICommandBus, IQueryBus } from '@restaurant/core-domain';
 import { UserServiceHandlers } from '@restaurant/shared-proto-ts';
 import { AsyncContainerModule, interfaces } from 'inversify';
-import { TYPES } from '../configs/types';
+import { TYPES } from '../config/types';
 import { userHandler } from './grpc/user/grpc_handler';
 
 export const module = new AsyncContainerModule(async (bind: interfaces.Bind) => {

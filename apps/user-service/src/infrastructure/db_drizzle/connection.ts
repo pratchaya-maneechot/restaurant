@@ -1,6 +1,6 @@
 import postgres from 'postgres';
 
-import { envConfig } from '../../configs/env';
+import { envConfig } from '../../config/env';
 
 const env = envConfig();
 const option: postgres.Options<{}> = {

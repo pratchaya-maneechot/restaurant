@@ -1,6 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
 import { PROTOS, UserServiceHandlers } from '@restaurant/shared-proto-ts';
-import { TYPES } from '../../configs/types';
+import { TYPES } from '../../config/types';
 import { initializes } from '../../initialize';
 
 (async () => {

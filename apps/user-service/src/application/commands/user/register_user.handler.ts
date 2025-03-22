@@ -2,7 +2,7 @@ import { ConflictException, ICommandHandler } from '@restaurant/core-domain';
 import { hash } from 'argon2';
 import { eq } from 'drizzle-orm';
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../configs/types';
+import { TYPES } from '../../../config/types';
 import { IUserRepository } from '../../../domain/repositories';
 import { users } from '../../../domain/tables';
 import { RegisterUserCommand } from './definitions/register_user';

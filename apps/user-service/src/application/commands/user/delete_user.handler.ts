@@ -1,6 +1,6 @@
 import { ICommandHandler } from '@restaurant/core-domain';
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../configs/types';
+import { TYPES } from '../../../config/types';
 import { IUserRepository } from '../../../domain/repositories';
 import { DeleteUserCommand } from './definitions/delete_user';
 

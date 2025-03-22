@@ -1,7 +1,7 @@
 import { ICommandHandler } from '@restaurant/core-domain';
 import { hash } from 'argon2';
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../configs/types';
+import { TYPES } from '../../../config/types';
 import { IUserRepository } from '../../../domain/repositories';
 import { UpdateUserCommand } from './definitions/update_user';
 

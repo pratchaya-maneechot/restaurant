@@ -5,7 +5,7 @@ import './controllers';
 import { expressErrorLoggerMiddleware, expressLoggerMiddleware, logger } from '@restaurant/shared-utils';
 import { Application, json } from 'express';
 import { InversifyExpressServer } from 'inversify-express-utils';
-import { envConfig } from '../../configs/env';
+import { envConfig } from '../../config/env';
 import { initializes } from '../../initialize';
 
 (async () => {

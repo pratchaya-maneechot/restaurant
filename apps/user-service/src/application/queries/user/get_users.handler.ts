@@ -1,7 +1,7 @@
 import { IQueryHandler } from '@restaurant/core-domain';
 import { and, like, sql, SQL } from 'drizzle-orm';
 import { inject, injectable } from 'inversify';
-import { TYPES } from '../../../configs/types';
+import { TYPES } from '../../../config/types';
 import { UserModel } from '../../../domain/models';
 import { IUserRepository } from '../../../domain/repositories';
 import { lower, users } from '../../../domain/tables';
