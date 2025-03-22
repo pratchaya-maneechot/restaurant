@@ -1,8 +1,8 @@
 package reservation
 
 import (
-	defs "apps/reservation-service/internal/application/queries/reservation/defs"
 	"apps/reservation-service/internal/domain"
+	"apps/reservation-service/internal/infrastructure/querybus"
 	"context"
 )
 
@@ -14,6 +14,6 @@ func NewGetReservationsHandler(repo domain.ReservationRepository) *GetReservatio
 	return &GetReservationsHandler{repo: repo}
 }
 
-func (h *GetReservationsHandler) Handle(ctx context.Context, query defs.GetReservationsQuery) (interface{}, error) {
+func (h *GetReservationsHandler) Handle(ctx context.Context, query querybus.Query) (interface{}, error) {
 	return h.repo.FindAll(ctx)
 }

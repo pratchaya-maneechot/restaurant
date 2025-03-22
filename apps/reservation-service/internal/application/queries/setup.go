@@ -10,7 +10,15 @@ type QueryBusSetup struct {
 	Bus *querybus.QueryBus
 }
 
-func NewQuerySetup(bus *querybus.QueryBus, getReservation *reservation.GetReservationHandler) QueryBusSetup {
+func NewQuerySetup(
+	bus *querybus.QueryBus,
+	getAvailableTablesHandler *reservation.GetAvailableTablesHandler,
+	getReservation *reservation.GetReservationHandler,
+	getReservations *reservation.GetReservationsHandler,
+) QueryBusSetup {
+	bus.Register(config.GetAvailableTables, getAvailableTablesHandler)
 	bus.Register(config.GetReservation, getReservation)
+	bus.Register(config.GetReservations, getReservations)
+
 	return QueryBusSetup{Bus: bus}
 }

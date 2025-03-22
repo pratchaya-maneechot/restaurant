@@ -39,8 +39,12 @@ func InitializeApp() App {
 		repository.NewReservationRepository,
 		//command handler
 		reservationCmd.NewCreateReservationHandler,
+		reservationCmd.NewUpdateReservationHandler,
+		reservationCmd.NewCancelReservationHandler,
 		//query handler
+		reservationQuery.NewGetAvailableTablesHandler,
 		reservationQuery.NewGetReservationHandler,
+		reservationQuery.NewGetReservationsHandler,
 		//setup
 		commands.NewCommandSetup,
 		queries.NewQuerySetup,

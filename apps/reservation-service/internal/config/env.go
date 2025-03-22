@@ -20,7 +20,7 @@ func LoadConfig() Config {
 	cfg := Config{
 		DBHost:     getEnv("DB_HOST", "localhost"),
 		DBPort:     getEnv("DB_PORT", "5432"),
-		DBUser:     getEnv("DB_USER", "admin"),
+		DBUser:     getEnv("DB_USER", "root"),
 		DBPassword: getEnv("DB_PASSWORD", "Hl7FudwaSNzOhhioo0GxlmmMD0LM+I8StQIqJCZ1TPg="),
 		DBName:     getEnv("DB_NAME", "reservation"),
 	}

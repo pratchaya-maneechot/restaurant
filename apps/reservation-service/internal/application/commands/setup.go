@@ -10,7 +10,15 @@ type CommandBusSetup struct {
 	Bus *commandbus.CommandBus
 }
 
-func NewCommandSetup(bus *commandbus.CommandBus, createReservation *reservation.CreateReservationHandler) CommandBusSetup {
+func NewCommandSetup(
+	bus *commandbus.CommandBus,
+	createReservation *reservation.CreateReservationHandler,
+	updateReservation *reservation.UpdateReservationHandler,
+	cancelReservation *reservation.CancelReservationHandler,
+) CommandBusSetup {
 	bus.Register(config.CreateReservation, createReservation)
+	bus.Register(config.UpdateReservation, updateReservation)
+	bus.Register(config.CancelReservation, cancelReservation)
+
 	return CommandBusSetup{Bus: bus}
 }
