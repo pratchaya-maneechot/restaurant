@@ -4,13 +4,13 @@
 package application
 
 import (
-	command_setup "apps/reservation-service/internal/application/commands"
+	"apps/reservation-service/internal/application/commands"
 	reservationCmd "apps/reservation-service/internal/application/commands/reservation"
-	query_setup "apps/reservation-service/internal/application/queries"
+	"apps/reservation-service/internal/application/queries"
 	reservationQuery "apps/reservation-service/internal/application/queries/reservation"
-	"apps/reservation-service/internal/infrastructure/command_bus"
+	"apps/reservation-service/internal/infrastructure/commandbus"
 	"apps/reservation-service/internal/infrastructure/db"
-	"apps/reservation-service/internal/infrastructure/query_bus"
+	"apps/reservation-service/internal/infrastructure/querybus"
 	"apps/reservation-service/internal/infrastructure/repository"
 
 	"github.com/google/wire"
@@ -18,12 +18,12 @@ import (
 )
 
 type App struct {
-	CommandBus *command_bus.CommandBus
-	QueryBus   *query_bus.QueryBus
+	CommandBus *commandbus.CommandBus
+	QueryBus   *querybus.QueryBus
 	DB         *pgxpool.Pool
 }
 
-func NewApp(cmdSetup command_setup.CommandBusSetup, querySetup query_setup.QueryBusSetup, dbConn *pgxpool.Pool) App {
+func NewApp(cmdSetup commands.CommandBusSetup, querySetup queries.QueryBusSetup, dbConn *pgxpool.Pool) App {
 	return App{
 		CommandBus: cmdSetup.Bus,
 		QueryBus:   querySetup.Bus,
@@ -42,11 +42,11 @@ func InitializeApp() App {
 		//query handler
 		reservationQuery.NewGetReservationHandler,
 		//setup
-		command_setup.NewCommandSetup,
-		query_setup.NewQuerySetup,
+		commands.NewCommandSetup,
+		queries.NewQuerySetup,
 
-		command_bus.NewCommandBus,
-		query_bus.NewQueryBus,
+		commandbus.NewCommandBus,
+		querybus.NewQueryBus,
 
 		NewApp,
 	)

@@ -1,7 +1,7 @@
-package definition
+package defs
 
 import (
-	"apps/reservation-service/internal/configs"
+	"apps/reservation-service/internal/config"
 	"time"
 
 	"github.com/google/uuid"
@@ -15,5 +15,5 @@ type CreateReservationCommand struct {
 }
 
 func (c CreateReservationCommand) Type() string {
-	return configs.CreateReservation
+	return config.CreateReservation
 }

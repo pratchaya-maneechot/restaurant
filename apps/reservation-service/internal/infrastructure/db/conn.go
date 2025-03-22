@@ -1,7 +1,7 @@
 package db
 
 import (
-	"apps/reservation-service/internal/configs"
+	"apps/reservation-service/internal/config"
 	"context"
 	"fmt"
 	"log"
@@ -10,7 +10,7 @@ import (
 )
 
 func NewDBConn() *pgxpool.Pool {
-	cfg := configs.LoadConfig()
+	cfg := config.LoadConfig()
 	connStr := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		cfg.DBUser,

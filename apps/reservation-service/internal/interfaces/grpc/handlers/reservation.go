@@ -1,11 +1,11 @@
-package grpc_handler
+package handlers
 
 import (
-	cmdDef "apps/reservation-service/internal/application/commands/reservation/definitions"
-	queryDef "apps/reservation-service/internal/application/queries/reservation/definitions"
+	cmdDefs "apps/reservation-service/internal/application/commands/reservation/defs"
+	qryDefs "apps/reservation-service/internal/application/queries/reservation/defs"
 	"apps/reservation-service/internal/domain"
-	command_bus "apps/reservation-service/internal/infrastructure/command_bus"
-	query_bus "apps/reservation-service/internal/infrastructure/query_bus"
+	"apps/reservation-service/internal/infrastructure/commandbus"
+	"apps/reservation-service/internal/infrastructure/querybus"
 	"context"
 	pb "libs/shared-protos/go/generated/reservation_service/proto"
 	"time"
@@ -15,11 +15,11 @@ import (
 
 type ReservationServer struct {
 	pb.UnimplementedReservationServiceServer
-	cmdBus *command_bus.CommandBus
-	qryBus *query_bus.QueryBus
+	cmdBus *commandbus.CommandBus
+	qryBus *querybus.QueryBus
 }
 
-func NewReservationServer(cmdBus *command_bus.CommandBus, qryBus *query_bus.QueryBus) *ReservationServer {
+func NewReservationServer(cmdBus *commandbus.CommandBus, qryBus *querybus.QueryBus) *ReservationServer {
 	return &ReservationServer{cmdBus: cmdBus, qryBus: qryBus}
 }
 
@@ -29,7 +29,7 @@ func (s *ReservationServer) CreateReservation(ctx context.Context, req *pb.Creat
 	if err != nil {
 		return nil, err
 	}
-	cmd := cmdDef.CreateReservationCommand{
+	cmd := cmdDefs.CreateReservationCommand{
 		ReservationID: reservationId,
 		CustomerName:  req.CustomerName,
 		TableID:       req.TableId,
@@ -46,7 +46,7 @@ func (s *ReservationServer) GetReservation(ctx context.Context, req *pb.GetReser
 	if err != nil {
 		return nil, err
 	}
-	query := queryDef.GetReservationQuery{ReservationID: reservationId}
+	query := qryDefs.GetReservationQuery{ReservationID: reservationId}
 	result, err := s.qryBus.Dispatch(ctx, query)
 	if err != nil {
 		return nil, err

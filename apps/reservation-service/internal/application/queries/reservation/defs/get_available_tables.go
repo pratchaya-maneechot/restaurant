@@ -1,7 +1,7 @@
-package definition
+package defs
 
 import (
-	"apps/reservation-service/internal/configs"
+	"apps/reservation-service/internal/config"
 	"time"
 )
 
@@ -10,5 +10,5 @@ type GetAvailableTablesQuery struct {
 }
 
 func (q GetAvailableTablesQuery) Type() string {
-	return configs.GetAvailableTables
+	return config.GetAvailableTables
 }

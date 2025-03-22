@@ -1,7 +1,7 @@
-package definition
+package defs
 
 import (
-	"apps/reservation-service/internal/configs"
+	"apps/reservation-service/internal/config"
 
 	"github.com/google/uuid"
 )
@@ -11,5 +11,5 @@ type CancelReservationCommand struct {
 }
 
 func (c CancelReservationCommand) Type() string {
-	return configs.CancelReservation
+	return config.CancelReservation
 }

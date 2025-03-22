@@ -1,7 +1,7 @@
-package definition
+package defs
 
 import (
-	"apps/reservation-service/internal/configs"
+	"apps/reservation-service/internal/config"
 
 	"github.com/google/uuid"
 )
@@ -11,5 +11,5 @@ type GetReservationQuery struct {
 }
 
 func (q GetReservationQuery) Type() string {
-	return configs.GetReservation
+	return config.GetReservation
 }

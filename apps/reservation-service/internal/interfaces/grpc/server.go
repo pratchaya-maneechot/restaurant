@@ -1,8 +1,8 @@
-package server
+package grpc
 
 import (
 	"apps/reservation-service/internal/application"
-	grpc_handler "apps/reservation-service/internal/interfaces/grpc/handlers"
+	"apps/reservation-service/internal/interfaces/grpc/handlers"
 	"apps/reservation-service/internal/interfaces/grpc/interceptors"
 	"log"
 	"net"
@@ -33,7 +33,7 @@ func Run() {
 	)
 
 	// Register service
-	pb.RegisterReservationServiceServer(grpcServer, grpc_handler.NewReservationServer(app.CommandBus, app.QueryBus))
+	pb.RegisterReservationServiceServer(grpcServer, handlers.NewReservationServer(app.CommandBus, app.QueryBus))
 
 	// Graceful shutdown
 	sigChan := make(chan os.Signal, 1)

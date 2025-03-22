@@ -1,7 +1,7 @@
-package command
+package reservation
 
 import (
-	definition "apps/reservation-service/internal/application/commands/reservation/definitions"
+	defs "apps/reservation-service/internal/application/commands/reservation/defs"
 	"apps/reservation-service/internal/domain"
 	"context"
 )
@@ -14,7 +14,7 @@ func NewUpdateReservationHandler(repo domain.ReservationRepository) *UpdateReser
 	return &UpdateReservationHandler{repo: repo}
 }
 
-func (h *UpdateReservationHandler) Handle(ctx context.Context, cmd definition.UpdateReservationCommand) error {
+func (h *UpdateReservationHandler) Handle(ctx context.Context, cmd defs.UpdateReservationCommand) error {
 	reservation, err := h.repo.FindByID(ctx, cmd.ReservationID)
 	if err != nil {
 		return err

@@ -1,7 +1,7 @@
-package query
+package reservation
 
 import (
-	definition "apps/reservation-service/internal/application/queries/reservation/definitions"
+	defs "apps/reservation-service/internal/application/queries/reservation/defs"
 	"apps/reservation-service/internal/domain"
 	"context"
 )
@@ -14,6 +14,6 @@ func NewGetReservationsHandler(repo domain.ReservationRepository) *GetReservatio
 	return &GetReservationsHandler{repo: repo}
 }
 
-func (h *GetReservationsHandler) Handle(ctx context.Context, query definition.GetReservationsQuery) ([]*domain.Reservation, error) {
+func (h *GetReservationsHandler) Handle(ctx context.Context, query defs.GetReservationsQuery) ([]*domain.Reservation, error) {
 	return h.repo.FindAll(ctx)
 }

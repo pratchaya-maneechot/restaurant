@@ -1,9 +1,9 @@
-package command
+package reservation
 
 import (
-	definition "apps/reservation-service/internal/application/commands/reservation/definitions"
+	defs "apps/reservation-service/internal/application/commands/reservation/defs"
 	"apps/reservation-service/internal/domain"
-	"apps/reservation-service/internal/infrastructure/command_bus"
+	"apps/reservation-service/internal/infrastructure/commandbus"
 	"context"
 	"fmt"
 )
@@ -16,8 +16,8 @@ func NewCreateReservationHandler(repo domain.ReservationRepository) *CreateReser
 	return &CreateReservationHandler{repo: repo}
 }
 
-func (h *CreateReservationHandler) Handle(ctx context.Context, cmd command_bus.Command) error {
-	input, ok := cmd.(definition.CreateReservationCommand)
+func (h *CreateReservationHandler) Handle(ctx context.Context, cmd commandbus.Command) error {
+	input, ok := cmd.(defs.CreateReservationCommand)
 	if !ok {
 		return fmt.Errorf("invalid command type: expected CreateReservationCommand, got %T", cmd)
 	}

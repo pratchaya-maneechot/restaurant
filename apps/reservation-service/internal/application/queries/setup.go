@@ -1,16 +1,16 @@
-package query_setup
+package queries
 
 import (
-	query "apps/reservation-service/internal/application/queries/reservation"
-	"apps/reservation-service/internal/configs"
-	"apps/reservation-service/internal/infrastructure/query_bus"
+	"apps/reservation-service/internal/application/queries/reservation"
+	"apps/reservation-service/internal/config"
+	"apps/reservation-service/internal/infrastructure/querybus"
 )
 
 type QueryBusSetup struct {
-	Bus *query_bus.QueryBus
+	Bus *querybus.QueryBus
 }
 
-func NewQuerySetup(bus *query_bus.QueryBus, getReservation *query.GetReservationHandler) QueryBusSetup {
-	bus.Register(configs.GetReservation, getReservation)
+func NewQuerySetup(bus *querybus.QueryBus, getReservation *reservation.GetReservationHandler) QueryBusSetup {
+	bus.Register(config.GetReservation, getReservation)
 	return QueryBusSetup{Bus: bus}
 }

@@ -1,16 +1,16 @@
-package command_setup
+package commands
 
 import (
-	command "apps/reservation-service/internal/application/commands/reservation"
-	"apps/reservation-service/internal/configs"
-	"apps/reservation-service/internal/infrastructure/command_bus"
+	"apps/reservation-service/internal/application/commands/reservation"
+	"apps/reservation-service/internal/config"
+	"apps/reservation-service/internal/infrastructure/commandbus"
 )
 
 type CommandBusSetup struct {
-	Bus *command_bus.CommandBus
+	Bus *commandbus.CommandBus
 }
 
-func NewCommandSetup(bus *command_bus.CommandBus, createReservation *command.CreateReservationHandler) CommandBusSetup {
-	bus.Register(configs.CreateReservation, createReservation)
+func NewCommandSetup(bus *commandbus.CommandBus, createReservation *reservation.CreateReservationHandler) CommandBusSetup {
+	bus.Register(config.CreateReservation, createReservation)
 	return CommandBusSetup{Bus: bus}
 }

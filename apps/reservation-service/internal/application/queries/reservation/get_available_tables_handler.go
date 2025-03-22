@@ -1,9 +1,9 @@
-package query
+package reservation
 
 import (
-	definition "apps/reservation-service/internal/application/queries/reservation/definitions"
+	defs "apps/reservation-service/internal/application/queries/reservation/defs"
 	"apps/reservation-service/internal/domain"
-	"apps/reservation-service/internal/infrastructure/query_bus"
+	"apps/reservation-service/internal/infrastructure/querybus"
 	"context"
 	"fmt"
 )
@@ -16,8 +16,8 @@ func NewGetAvailableTablesHandler(repo domain.ReservationRepository) *GetAvailab
 	return &GetAvailableTablesHandler{repo: repo}
 }
 
-func (h *GetAvailableTablesHandler) Handle(ctx context.Context, query query_bus.Query) (interface{}, error) {
-	params, ok := query.(definition.GetAvailableTablesQuery)
+func (h *GetAvailableTablesHandler) Handle(ctx context.Context, query querybus.Query) (interface{}, error) {
+	params, ok := query.(defs.GetAvailableTablesQuery)
 	if !ok {
 		return nil, fmt.Errorf("invalid query type: expected GetAvailableTablesQuery, got %T", query)
 	}

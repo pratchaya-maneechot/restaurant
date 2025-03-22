@@ -1,9 +1,9 @@
 package main
 
 import (
-	server "apps/reservation-service/internal/interfaces/grpc"
+	"apps/reservation-service/internal/interfaces/grpc"
 )
 
 func main() {
-	server.Run()
+	grpc.Run()
 }

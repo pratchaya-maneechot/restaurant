@@ -1,7 +1,7 @@
-package command
+package reservation
 
 import (
-	definition "apps/reservation-service/internal/application/commands/reservation/definitions"
+	defs "apps/reservation-service/internal/application/commands/reservation/defs"
 	"apps/reservation-service/internal/domain"
 	"context"
 )
@@ -14,7 +14,7 @@ func NewCancelReservationHandler(repo domain.ReservationRepository) *CancelReser
 	return &CancelReservationHandler{repo: repo}
 }
 
-func (h *CancelReservationHandler) Handle(ctx context.Context, cmd definition.CancelReservationCommand) error {
+func (h *CancelReservationHandler) Handle(ctx context.Context, cmd defs.CancelReservationCommand) error {
 	reservation, err := h.repo.FindByID(ctx, cmd.ReservationID)
 	if err != nil {
 		return err
