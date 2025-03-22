@@ -5,7 +5,7 @@ import (
 	"apps/reservation-service/internal/domain"
 	"apps/reservation-service/internal/infrastructure/commandbus"
 	"context"
-	"fmt"
+	"errors"
 )
 
 type CancelReservationHandler struct {
@@ -19,14 +19,17 @@ func NewCancelReservationHandler(repo domain.ReservationRepository) *CancelReser
 func (h *CancelReservationHandler) Handle(ctx context.Context, cmd commandbus.Command) (any, error) {
 	input, ok := cmd.(defs.CancelReservationCommand)
 	if !ok {
-		return nil, fmt.Errorf("invalid command type: expected CancelReservationCommand, got %T", cmd)
+		return nil, errors.New("invalid command type")
 	}
 	reservation, err := h.repo.FindByID(ctx, input.ReservationID)
 	if err != nil {
-		return err, err
+		return nil, err
 	}
 	if err := reservation.Cancel(); err != nil {
-		return err, err
+		return nil, err
 	}
-	return h.repo.Save(ctx, reservation), err
+	if err := h.repo.Save(ctx, reservation); err != nil {
+		return nil, err
+	}
+	return nil, nil
 }

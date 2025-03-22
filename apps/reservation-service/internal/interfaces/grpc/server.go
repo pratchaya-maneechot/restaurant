@@ -11,7 +11,7 @@ import (
 	"sync"
 	"syscall"
 
-	pb "libs/shared-protos/go/generated/reservation_service/proto"
+	pb "libs/shared-protos/go/generated/reservation/proto"
 
 	"google.golang.org/grpc"
 )

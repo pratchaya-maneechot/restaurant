@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Logger(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func Logger(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 	log.Printf("gRPC method called: %s", info.FullMethod)
 	resp, err := handler(ctx, req)
 	if err != nil {

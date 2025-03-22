@@ -5,7 +5,9 @@ import (
 	"apps/reservation-service/internal/domain"
 	"apps/reservation-service/internal/infrastructure/commandbus"
 	"context"
-	"fmt"
+	"errors"
+
+	"github.com/google/uuid"
 )
 
 type CreateReservationHandler struct {
@@ -19,11 +21,14 @@ func NewCreateReservationHandler(repo domain.ReservationRepository) *CreateReser
 func (h *CreateReservationHandler) Handle(ctx context.Context, cmd commandbus.Command) (any, error) {
 	input, ok := cmd.(defs.CreateReservationCommand)
 	if !ok {
-		return nil, fmt.Errorf("invalid command type: expected CreateReservationCommand, got %T", cmd)
+		return nil, errors.New("invalid command type")
 	}
-	reservation, err := domain.NewReservation(input.ReservationID, input.CustomerName, input.TableID, input.DateTime)
+	reservation, err := domain.NewReservation(uuid.New(), input.CustomerName, input.TableID, input.DateTime)
 	if err != nil {
 		return nil, err
 	}
-	return input.ReservationID, h.repo.Save(ctx, reservation)
+	if err := h.repo.Save(ctx, reservation); err != nil {
+		return nil, err
+	}
+	return reservation, nil
 }

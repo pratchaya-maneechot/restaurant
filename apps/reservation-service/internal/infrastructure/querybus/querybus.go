@@ -27,7 +27,7 @@ func (b *QueryBus) Register(queryType string, handler QueryHandler) {
 	b.handlers[queryType] = handler
 }
 
-func (b *QueryBus) Dispatch(ctx context.Context, query Query) (interface{}, error) {
+func (b *QueryBus) Dispatch(ctx context.Context, query Query) (any, error) {
 	handler, exists := b.handlers[query.Type()]
 	if !exists {
 		return nil, fmt.Errorf("no handler for query: %s", query.Type())

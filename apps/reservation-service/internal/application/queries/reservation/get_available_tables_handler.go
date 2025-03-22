@@ -16,7 +16,7 @@ func NewGetAvailableTablesHandler(repo domain.ReservationRepository) *GetAvailab
 	return &GetAvailableTablesHandler{repo: repo}
 }
 
-func (h *GetAvailableTablesHandler) Handle(ctx context.Context, query querybus.Query) (interface{}, error) {
+func (h *GetAvailableTablesHandler) Handle(ctx context.Context, query querybus.Query) (any, error) {
 	params, ok := query.(defs.GetAvailableTablesQuery)
 	if !ok {
 		return nil, fmt.Errorf("invalid query type: expected GetAvailableTablesQuery, got %T", query)

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package reservation;
+option go_package = "reservation/proto";
+
+import "reservation.proto";
+import "google/protobuf/empty.proto";
+
+service ReservationService {
+  rpc CreateReservation(CreateReservationRequest) returns (ReservationResponse);
+  rpc UpdateReservation(UpdateReservationRequest) returns (ReservationResponse);
+  rpc CancelReservation(CancelReservationRequest) returns (google.protobuf.Empty);
+  rpc GetReservation(GetReservationRequest) returns (ReservationResponse);
+  rpc ListReservations(ListReservationsRequest) returns (ListReservationsResponse);
+  rpc GetAvailableTables(GetAvailableTablesRequest) returns (GetAvailableTablesResponse);
+}

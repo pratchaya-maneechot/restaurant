@@ -58,3 +58,18 @@ func (r *Reservation) Cancel() error {
 func (r *Reservation) IsAvailable() bool {
 	return r.Status != StatusCanceled && r.DateTime.After(time.Now())
 }
+
+func (r *Reservation) CanBeModified() bool {
+	return r.Status != StatusCanceled && r.DateTime.After(time.Now().Add(-24*time.Hour))
+}
+
+func (r *Reservation) UpdateDateTime(newTime time.Time) error {
+	if !r.CanBeModified() {
+		return errors.New("cannot modify reservation")
+	}
+	if newTime.Before(time.Now()) {
+		return errors.New("new time must be in the future")
+	}
+	r.DateTime = newTime
+	return nil
+}

@@ -1,0 +1,56 @@
+syntax = "proto3";
+package reservation;
+option go_package = "reservation/proto";
+
+import "google/protobuf/timestamp.proto";
+
+enum ReservationStatus {
+  PENDING = 0;
+  CONFIRMED = 1;
+  CANCELED = 2;
+}
+
+message CreateReservationRequest {
+  string reservation_id = 1;
+  string customer_name = 2;
+  string table_id = 3;
+  google.protobuf.Timestamp date_time = 4;
+}
+
+message UpdateReservationRequest {
+  string reservation_id = 1;
+  google.protobuf.Timestamp date_time = 2;
+}
+
+message CancelReservationRequest {
+  string reservation_id = 1;
+}
+
+message GetReservationRequest {
+  string reservation_id = 1;
+}
+
+message ListReservationsRequest {
+  // Can be extended with filtering options
+}
+
+message GetAvailableTablesRequest {
+  google.protobuf.Timestamp date_time = 1;
+}
+
+message ReservationResponse {
+  string id = 1;
+  string customer_name = 2;
+  string table_id = 3;
+  google.protobuf.Timestamp date_time = 4;
+  ReservationStatus status = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+message ListReservationsResponse {
+  repeated ReservationResponse reservations = 1;
+}
+
+message GetAvailableTablesResponse {
+  repeated string table_ids = 1;
+}

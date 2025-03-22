@@ -16,7 +16,7 @@ func NewGetReservationHandler(repo domain.ReservationRepository) *GetReservation
 	return &GetReservationHandler{repo: repo}
 }
 
-func (h *GetReservationHandler) Handle(ctx context.Context, query querybus.Query) (interface{}, error) {
+func (h *GetReservationHandler) Handle(ctx context.Context, query querybus.Query) (any, error) {
 	params, ok := query.(defs.GetReservationQuery)
 	if !ok {
 		return nil, fmt.Errorf("invalid query type: expected GetReservationQuery, got %T", query)
