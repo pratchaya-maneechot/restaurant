@@ -2,6 +2,7 @@ package command_setup
 
 import (
 	command "apps/reservation-service/internal/application/commands/reservation"
+	"apps/reservation-service/internal/configs"
 	"apps/reservation-service/internal/infrastructure/command_bus"
 )
 
@@ -10,6 +11,6 @@ type CommandBusSetup struct {
 }
 
 func NewCommandSetup(bus *command_bus.CommandBus, createReservation *command.CreateReservationHandler) CommandBusSetup {
-	bus.Register("CreateReservation", createReservation)
+	bus.Register(configs.CreateReservation, createReservation)
 	return CommandBusSetup{Bus: bus}
 }

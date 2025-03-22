@@ -1,6 +1,7 @@
 package definition
 
 import (
+	"apps/reservation-service/internal/configs"
 	"time"
 )
 
@@ -12,5 +13,5 @@ type CreateReservationCommand struct {
 }
 
 func (c CreateReservationCommand) Type() string {
-	return "CreateReservation"
+	return configs.CreateReservation
 }

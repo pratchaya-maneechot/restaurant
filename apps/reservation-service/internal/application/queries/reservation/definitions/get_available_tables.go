@@ -1,6 +1,7 @@
 package definition
 
 import (
+	"apps/reservation-service/internal/configs"
 	"time"
 )
 
@@ -9,5 +10,5 @@ type GetAvailableTablesQuery struct {
 }
 
 func (q GetAvailableTablesQuery) Type() string {
-	return "GetAvailableTables"
+	return configs.GetAvailableTables
 }
