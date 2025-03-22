@@ -1,9 +1,13 @@
 package definition
 
-import "apps/reservation-service/internal/configs"
+import (
+	"apps/reservation-service/internal/configs"
+
+	"github.com/google/uuid"
+)
 
 type GetReservationQuery struct {
-	ReservationID string
+	ReservationID uuid.UUID
 }
 
 func (q GetReservationQuery) Type() string {

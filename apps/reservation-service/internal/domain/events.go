@@ -1,9 +1,13 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type ReservationCreated struct {
-	ReservationID string
+	ReservationID uuid.UUID
 	CustomerName  string
 	TableID       string
 	DateTime      time.Time
@@ -21,7 +25,7 @@ func NewReservationCreated(reservation *Reservation) ReservationCreated {
 }
 
 type ReservationCanceled struct {
-	ReservationID string
+	ReservationID uuid.UUID
 	TableID       string
 	OccurredAt    time.Time
 }

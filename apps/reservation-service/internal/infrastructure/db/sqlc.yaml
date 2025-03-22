@@ -1,0 +1,13 @@
+version: '2'
+sql:
+  - engine: 'postgresql'
+    queries:
+      - 'queries/reservation/save.sql'
+      - 'queries/reservation/find.sql'
+      - 'queries/reservation/tables.sql'
+    schema: 'migrations'
+    gen:
+      go:
+        package: 'db'
+        out: 'generated'
+        sql_package: 'pgx/v5'

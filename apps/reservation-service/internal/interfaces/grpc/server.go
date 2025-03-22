@@ -19,6 +19,7 @@ import (
 func Run() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	app := application.InitializeApp()
+	defer app.DB.Close()
 	// Server config
 	port := ":50051"
 	lis, err := net.Listen("tcp", port)

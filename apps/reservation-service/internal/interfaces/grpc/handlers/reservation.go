@@ -9,6 +9,8 @@ import (
 	"context"
 	pb "libs/shared-protos/go/generated/reservation_service/proto"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type ReservationServer struct {
@@ -23,8 +25,12 @@ func NewReservationServer(cmdBus *command_bus.CommandBus, qryBus *query_bus.Quer
 
 func (s *ReservationServer) CreateReservation(ctx context.Context, req *pb.CreateReservationRequest) (*pb.CreateReservationResponse, error) {
 	dateTime, _ := time.Parse(time.RFC3339, req.DateTime)
+	reservationId, err := uuid.Parse(req.ReservationId)
+	if err != nil {
+		return nil, err
+	}
 	cmd := cmdDef.CreateReservationCommand{
-		ReservationID: req.ReservationId,
+		ReservationID: reservationId,
 		CustomerName:  req.CustomerName,
 		TableID:       req.TableId,
 		DateTime:      dateTime,
@@ -36,14 +42,18 @@ func (s *ReservationServer) CreateReservation(ctx context.Context, req *pb.Creat
 }
 
 func (s *ReservationServer) GetReservation(ctx context.Context, req *pb.GetReservationRequest) (*pb.GetReservationResponse, error) {
-	query := queryDef.GetReservationQuery{ReservationID: req.ReservationId}
+	reservationId, err := uuid.Parse(req.ReservationId)
+	if err != nil {
+		return nil, err
+	}
+	query := queryDef.GetReservationQuery{ReservationID: reservationId}
 	result, err := s.qryBus.Dispatch(ctx, query)
 	if err != nil {
 		return nil, err
 	}
 	res := result.(*domain.Reservation)
 	return &pb.GetReservationResponse{
-		ReservationId: res.ID,
+		ReservationId: res.ID.String(),
 		CustomerName:  res.CustomerName,
 		TableId:       res.TableID,
 		DateTime:      res.DateTime.Format(time.RFC3339),

@@ -3,10 +3,12 @@ package definition
 import (
 	"apps/reservation-service/internal/configs"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type UpdateReservationCommand struct {
-	ReservationID string
+	ReservationID uuid.UUID
 	DateTime      time.Time
 }
 

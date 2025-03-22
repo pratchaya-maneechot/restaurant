@@ -3,6 +3,8 @@ package domain
 import (
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type ReservationStatus string
@@ -14,7 +16,7 @@ const (
 )
 
 type Reservation struct {
-	ID           string
+	ID           uuid.UUID
 	CustomerName string
 	TableID      string
 	DateTime     time.Time
@@ -22,10 +24,7 @@ type Reservation struct {
 	CreatedAt    time.Time
 }
 
-func NewReservation(id, customerName, tableID string, dateTime time.Time) (*Reservation, error) {
-	if id == "" || customerName == "" || tableID == "" {
-		return nil, errors.New("reservation ID, customer name, and table ID cannot be empty")
-	}
+func NewReservation(id uuid.UUID, customerName, tableID string, dateTime time.Time) (*Reservation, error) {
 	if dateTime.Before(time.Now()) {
 		return nil, errors.New("reservation date must be in the future")
 	}

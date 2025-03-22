@@ -54,7 +54,7 @@
         }
       }
     },
-    "db:generate": {
+    "db:generate:sql": {
       "executor": "nx:run-commands",
       "defaultConfiguration": "local",
       "options": {
