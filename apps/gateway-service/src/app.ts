@@ -4,18 +4,18 @@ import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import http from 'http';
+import {
+  CORS_HEADERS,
+  CORS_METHODS,
+  DEFAULT_PORT,
+  GRAPHQL_PATH,
+  HEALTH_PATH,
+  JSON_LIMIT,
+  RATE_LIMIT_MAX,
+  RATE_LIMIT_WINDOW_MS,
+} from './config/const';
 import { graphqlServer } from './graphql';
 import { createContext } from './graphql/context';
-
-// Configuration constants
-const DEFAULT_PORT = 3000;
-const GRAPHQL_PATH = '/graphql';
-const HEALTH_PATH = '/health';
-const CORS_METHODS = ['GET', 'POST'];
-const CORS_HEADERS = ['Content-Type', 'Authorization'];
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-const RATE_LIMIT_MAX = 200;
-const JSON_LIMIT = '10mb';
 
 // Interface for better type safety
 interface ServerConfig {
