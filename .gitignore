@@ -42,6 +42,7 @@ Thumbs.db
 .nx/workspace-data
 secrets
 generated.ts
+generated
 
 # Next.js
 .next
@@ -66,3 +67,5 @@ out
 *.tfplan
 
 .infracost
+
+wire_gen.go
