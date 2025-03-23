@@ -49,7 +49,6 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
         {
           requestId,
           operation: request.operationName,
-          query: redactQuery(request.query),
           variables: sanitizeVariables(request.variables),
           headers: sanitizeHeaders(request.http?.headers),
           context: {
