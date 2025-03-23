@@ -3,6 +3,7 @@ export const G_TYPES = {
 
   CommandBus: Symbol('CommandBus'),
   CommandHandler: Symbol('CommandHandler'),
+  AuthProvider: Symbol('AuthProvider'),
 
   QueryBus: Symbol('QueryBus'),
   QueryHandler: Symbol('QueryHandler'),
