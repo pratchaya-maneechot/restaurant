@@ -137,7 +137,7 @@ export async function run(): Promise<void> {
     const server = await startServer(config);
     setupGracefulShutdown(server);
   } catch (error) {
-    logger.error('Failed to start server:', { error });
+    console.error(error);
     process.exit(1);
   }
 }

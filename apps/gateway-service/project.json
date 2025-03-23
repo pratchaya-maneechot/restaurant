@@ -18,6 +18,7 @@
         "tsConfig": "apps/gateway-service/tsconfig.app.json",
         "assets": [
           "apps/gateway-service/src/assets",
+          "libs/shared-protos/_proto/**/*.proto",
           {
             "input": "apps/gateway-service/src/graphql/typeDefs",
             "glob": "**/*.graphql",

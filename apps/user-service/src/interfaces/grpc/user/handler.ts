@@ -26,7 +26,9 @@ export function userHandler(ctx: IContextHandler): UserServiceHandlers {
       .input(RegisterUserSchema)
       .output<RegisterUserResponse>(z.object({ message: z.string(), success: z.boolean(), userId: z.string() }))
       .handler(async (caller) => {
-        const result: UserModel = await ctx.commandBus.send(new RegisterUserCommand(caller.request));
+        const result: UserModel = await ctx.commandBus.send(
+          new RegisterUserCommand({ ...caller.request, role: 'CUSTOMER' }),
+        );
         return {
           message: 'ok',
           success: true,

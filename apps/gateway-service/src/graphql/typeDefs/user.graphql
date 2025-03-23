@@ -1,0 +1,6 @@
+type Query {
+  user: OperationCompleted!
+}
+type Mutation {
+  register(input: RegisterInput!): OperationCompleted!
+}
