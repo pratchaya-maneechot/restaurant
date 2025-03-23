@@ -13,11 +13,7 @@ export async function graphqlServer(httpServer: http.Server<typeof http.Incoming
   const plugins: ApolloServerPlugin<IAppContext>[] = [
     ApolloServerPluginDrainHttpServer({ httpServer }),
     ApolloServerPluginInlineTraceDisabled(),
-    ApolloLoggerPlugin({
-      service: 'graphql-gateway',
-      logLevel: 'info',
-      logSlowResolversThreshold: 1000,
-    }),
+    ApolloLoggerPlugin(),
   ];
 
   if (process.env.NODE_ENV === 'production') {

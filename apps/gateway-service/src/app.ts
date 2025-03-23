@@ -1,5 +1,5 @@
 import { expressMiddleware } from '@apollo/server/express4';
-import { logger } from '@restaurant/shared-utils';
+import { expressLogger, logger } from '@restaurant/shared-utils';
 import cors from 'cors';
 import express, { Express, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -58,7 +58,7 @@ async function startServer(config: ServerConfig): Promise<http.Server> {
   app.get(HEALTH_PATH, (_req: Request, res: Response) => {
     res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
   });
-
+  app.use(expressLogger());
   // Apollo Server integration
   const apolloServer = await graphqlServer(httpServer);
   app.use(
@@ -71,7 +71,7 @@ async function startServer(config: ServerConfig): Promise<http.Server> {
   // Start the server
   return new Promise((resolve) => {
     httpServer.listen({ port }, () => {
-      logger.info(`🚀 Server ready at http://localhost:${port}${GRAPHQL_PATH}`);
+      logger.info(`🚀 Server ready at http://localhost:${port}${GRAPHQL_PATH}`, { HELLO: 'SSSS' });
       resolve(httpServer);
     });
   });

@@ -2,7 +2,6 @@ import 'reflect-metadata';
 //
 import './controllers';
 //
-import { expressErrorLoggerMiddleware, expressLoggerMiddleware, logger } from '@restaurant/shared-utils';
 import { Application, json } from 'express';
 import { InversifyExpressServer } from 'inversify-express-utils';
 import { envConfig } from '../../config/env';
@@ -15,13 +14,14 @@ import { initializes } from '../../initialize';
 
   server.setConfig((app: Application) => {
     app.use(json());
-    app.use(expressLoggerMiddleware);
   });
 
-  server.setErrorConfig((app: Application) => {
-    app.use(expressErrorLoggerMiddleware);
+  server.setErrorConfig(() => {
+    //
   });
 
   const api: Application = server.build();
-  api.listen(config.API_PORT, () => logger.info('The application is initialized on the port %s', config.API_PORT));
+  api.listen(config.API_PORT, () => {
+    //
+  });
 })();

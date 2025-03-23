@@ -109,12 +109,12 @@ export class GrpcInterceptorBuilder<TInput extends ZodSchema, TOutput extends Zo
       callback: sendUnaryData<z.infer<TOutput>>,
     ) => {
       const metadata: LoggingMetadata = {
-        requestId: options.generateId?.() ?? uuid4(),
+        requestId: caller.metadata.get('X-Request-ID')?.[0]?.toString() ?? options.generateId?.() ?? uuid4(),
         methodName: caller.getPath(),
         startTime: Date.now(),
       };
 
-      const childLogger = options.logger.createChild({
+      const childLogger = options.logger.child({
         requestId: metadata.requestId,
         methodName: metadata.methodName,
       });
@@ -139,24 +139,25 @@ export class GrpcInterceptorBuilder<TInput extends ZodSchema, TOutput extends Zo
 
         const response = await method(caller);
 
-        if (outputSchema) {
-          const parseResult = outputSchema.safeParse(response);
-          if (!parseResult.success) {
-            const error: ServerErrorResponse = {
-              code: status.INTERNAL,
-              message: 'Invalid response output',
-              details: parseResult.error.message,
-              metadata: new Metadata(),
-              name: 'INTERNAL',
-            };
-            throw error;
-          }
+        const parseResult = outputSchema.safeParse(response);
+        if (!parseResult.success) {
+          const error: ServerErrorResponse = {
+            code: status.INTERNAL,
+            message: 'Invalid response output',
+            details: parseResult.error.message,
+            metadata: new Metadata(),
+            name: 'INTERNAL',
+          };
+          throw error;
         }
 
         const duration = Date.now() - metadata.startTime;
-        childLogger[options.logLevel ?? 'info']({ duration, response }, `Completed ${metadata.methodName}`);
+        childLogger[options.logLevel ?? 'info'](
+          { duration, response: parseResult.data },
+          `Completed ${metadata.methodName}`,
+        );
 
-        callback(null, response);
+        callback(null, parseResult.data);
       } catch (error) {
         const duration = Date.now() - metadata.startTime;
         childLogger.error(

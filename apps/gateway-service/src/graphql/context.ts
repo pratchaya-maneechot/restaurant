@@ -1,11 +1,11 @@
 import { AuthProvider, IAuthProvider } from '@restaurant/core-domain';
-import { logger } from '@restaurant/shared-utils';
-import express from 'express';
-import { service as reservation } from '../services/reservation.service';
-import { service as user } from '../services/user.service';
+import { IExpressRequest } from '@restaurant/shared-utils';
+import _ from 'lodash';
+import { reservationService } from '../services/reservation.service';
+import { userService } from '../services/user.service';
 import { IAppContext, IAuthentication } from './types';
 
-export async function createContext(req: express.Request): Promise<IAppContext> {
+export async function createContext(req: IExpressRequest): Promise<IAppContext> {
   const identity: IAuthentication = {
     id: '',
   };
@@ -15,15 +15,17 @@ export async function createContext(req: express.Request): Promise<IAppContext> 
       const authService: IAuthProvider = new AuthProvider();
       const verified = await authService.verifyToken<IAuthentication>(idToken);
       identity.id = verified.id;
+      req.metadata?.set('user', JSON.stringify(_.pick(identity, 'name', 'email', 'phone', 'role')));
     }
   } catch (error) {
-    logger.error(error.message, error);
+    req.logger?.error(error.message, error);
   }
   return {
+    logger: req.logger,
     identity,
     service: {
-      user,
-      reservation,
+      user: userService({ metadata: req.metadata }),
+      reservation: reservationService({ metadata: req.metadata }),
     },
   };
 }

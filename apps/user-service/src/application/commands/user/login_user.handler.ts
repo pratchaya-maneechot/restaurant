@@ -2,6 +2,7 @@ import { BadRequestException, G_TYPES, IAuthProvider, ICommandHandler } from '@r
 import { verify } from 'argon2';
 import { eq } from 'drizzle-orm';
 import { inject, injectable } from 'inversify';
+import _ from 'lodash';
 import { TYPES } from '../../../config/types';
 import { IUserRepository } from '../../../domain/repositories';
 import { users } from '../../../domain/tables';
@@ -24,7 +25,7 @@ export class LoginUserCommandHandler implements ICommandHandler<LoginUserCommand
       throw new BadRequestException(`The email or password incorrect`);
     }
 
-    const token = await this._authProvider.createToken(user.id, user);
+    const token = await this._authProvider.createToken(user.id, _.pick(user, 'name', 'email', 'phone', 'role'));
 
     return {
       user,

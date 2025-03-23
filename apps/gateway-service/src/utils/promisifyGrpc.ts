@@ -1,5 +1,6 @@
 // grpcUtils.ts
-import { ServiceError } from '@grpc/grpc-js';
+
+import { CallOptions, ClientUnaryCall, Metadata, ServiceError } from '@grpc/grpc-js';
 import { Status } from '@grpc/grpc-js/build/src/constants';
 
 /**
@@ -8,58 +9,71 @@ import { Status } from '@grpc/grpc-js/build/src/constants';
 type GrpcCallback<T> = (error: ServiceError | null, response: T | null) => void;
 
 /**
- * Type definition for a gRPC service method
+ * Type definition for a gRPC service method with all possible parameter combinations
  */
-type GrpcMethod<TRequest, TResponse> = (request: TRequest, callback: GrpcCallback<TResponse>) => any;
+type GrpcMethod<TRequest, TResponse> = (
+  request: TRequest,
+  metadataOrCallback?: Metadata | GrpcCallback<TResponse>,
+  optionsOrCallback?: CallOptions | GrpcCallback<TResponse>,
+  callback?: GrpcCallback<TResponse>,
+) => ClientUnaryCall;
 
 /**
- * Promisifies a gRPC service method call
- *
- * @param method - The gRPC service method to call
- * @param request - The request payload
- * @returns A promise that resolves with the response or rejects with an error
+ * Promisifies a gRPC service method call with optional metadata and options
  */
 export function promisifyGrpc<TRequest, TResponse>(
   method: GrpcMethod<TRequest, TResponse>,
   request: TRequest,
+  metadata?: Metadata,
+  options?: CallOptions,
 ): Promise<TResponse> {
   return new Promise<TResponse>((resolve, reject) => {
-    method(request, (error, response) => {
+    const callback: GrpcCallback<TResponse> = (error, response) => {
       if (error) {
         reject(error);
       } else if (response) {
         resolve(response);
       } else {
-        // Create a standard gRPC error with INTERNAL status
         const err = new Error('Empty response received from gRPC service') as ServiceError;
         err.code = Status.INTERNAL;
         err.details = 'The service returned a null or undefined response';
         reject(err);
       }
-    });
+    };
+
+    if (metadata && options) {
+      method(request, metadata, options, callback);
+    } else if (metadata) {
+      method(request, metadata, callback);
+    } else {
+      method(request, callback);
+    }
   });
 }
 
 /**
- * Creates a promisified version of a gRPC service
- *
- * @param service - The gRPC service to promisify
- * @returns An object with the same methods but returning promises
+ * Creates a promisified version of a gRPC service with proper typing
  */
-export function promisifyGrpcService<T extends Record<string, any>>(
-  service: T,
+export function promisifyGrpcService<TService extends Record<string, any>>(
+  service: TService,
+  baseMetadata = new Metadata(),
 ): {
-  [K in keyof T]: T[K] extends GrpcMethod<infer TRequest, infer TResponse>
-    ? (request: TRequest) => Promise<TResponse>
-    : T[K];
+  [K in keyof TService]: TService[K] extends GrpcMethod<infer TRequest, infer TResponse>
+    ? (request: TRequest, metadata?: Metadata, options?: CallOptions) => Promise<TResponse>
+    : TService[K];
 } {
   const promisified: Record<string, any> = {};
 
   for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(service))) {
-    const prop = service[key as keyof T];
+    const prop = service[key as keyof TService];
 
     if (typeof prop === 'function' && key !== 'constructor') {
-      promisified[key] = (request: any) => promisifyGrpc(prop.bind(service), request);
+      promisified[key] = (request: any, metadata?: Metadata, options?: CallOptions) => {
+        if (metadata) {
+          baseMetadata.merge(metadata);
+        }
+        return promisifyGrpc(prop.bind(service), request, baseMetadata, options);
+      };
     } else {
       promisified[key] = prop;
     }

@@ -1,7 +1,5 @@
-import { ApolloServerPlugin, GraphQLRequestContext, GraphQLRequestListener, HeaderMap } from '@apollo/server';
-import pino, { Level } from 'pino';
-import { v4 } from 'uuid';
-import { logger } from './logger';
+import { ApolloServerPlugin, GraphQLRequestContext, GraphQLRequestListener } from '@apollo/server';
+import pino, { Logger } from 'pino';
 
 interface RequestTimings {
   requestStart: number;
@@ -13,26 +11,11 @@ interface RequestTimings {
 }
 
 interface LoggerOptions {
-  service: string;
   logSlowResolversThreshold?: number;
-  logLevel?: Level;
 }
 
-export function ApolloLoggerPlugin<T extends Record<string, any>>(options: LoggerOptions): ApolloServerPlugin<T> {
-  const {
-    service,
-    logSlowResolversThreshold = 1000,
-    logLevel = 'info', // Default log level
-  } = options;
-
-  // Get the base logger and set its level
-  const baseLogger = logger.getLogger();
-  baseLogger.level = logLevel;
-
-  const requestLogger = baseLogger.child({
-    component: 'apollo-server',
-    service,
-  });
+export function ApolloLoggerPlugin<T extends Record<string, any>>(options?: LoggerOptions): ApolloServerPlugin<T> {
+  const { logSlowResolversThreshold = 1000 } = options || {};
 
   const plugin: ApolloServerPlugin<T> = {
     async requestDidStart(initialContext: GraphQLRequestContext<T>): Promise<GraphQLRequestListener<T>> {
@@ -41,16 +24,13 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
         requestStart: performance.now(),
         resolverTimings: {},
       };
+      const _logger = contextValue['logger'] as Logger;
 
-      const requestId = v4();
-      const childLogger = requestLogger.child({ requestId });
-
-      childLogger.info(
+      _logger.info(
         {
-          requestId,
           operation: request.operationName,
-          variables: sanitizeVariables(request.variables),
-          headers: sanitizeHeaders(request.http?.headers),
+          variables: request.variables,
+          headers: request.http?.headers,
           context: {
             identity: contextValue['identity'],
             userAgent: request.http?.headers?.get('user-agent'),
@@ -68,9 +48,9 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
           return async (err) => {
             const duration = err ? undefined : performance.now() - (timings.parsingStart || 0);
             if (err) {
-              childLogger.warn({ err }, 'Query parsing failed');
+              _logger.warn({ err }, 'Query parsing failed');
             } else {
-              childLogger.debug({ duration: `${duration?.toFixed(2)}ms` }, 'Query parsing completed');
+              _logger.debug({ duration: `${duration?.toFixed(2)}ms` }, 'Query parsing completed');
             }
           };
         },
@@ -80,9 +60,9 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
           return async (err) => {
             const duration = err ? undefined : performance.now() - (timings.validationStart || 0);
             if (err) {
-              childLogger.warn({ err }, 'Query validation failed');
+              _logger.warn({ err }, 'Query validation failed');
             } else {
-              childLogger.debug({ duration: `${duration?.toFixed(2)}ms` }, 'Query validation completed');
+              _logger.debug({ duration: `${duration?.toFixed(2)}ms` }, 'Query validation completed');
             }
           };
         },
@@ -99,11 +79,11 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
                 timings.resolverTimings[fieldKey] = (timings.resolverTimings[fieldKey] || 0) + duration;
 
                 const logLevel = duration > logSlowResolversThreshold ? 'warn' : 'debug';
-                childLogger[logLevel](
+                _logger[logLevel](
                   {
                     fieldName: info.fieldName,
                     parentType: info.parentType.name,
-                    args: sanitizeVariables(args),
+                    args: args,
                     duration: `${duration.toFixed(2)}ms`,
                     ...(error && { error: pino.stdSerializers.err(error) }),
                   },
@@ -117,11 +97,10 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
         async willSendResponse(context) {
           timings.requestEnd = performance.now();
           const totalDuration = timings.requestEnd - timings.requestStart;
-          const executionDuration = timings.requestEnd - (timings.executionStart || timings.requestStart);
+          const executionDuration = timings.executionStart ? timings.requestEnd - timings.executionStart : undefined;
 
-          childLogger.info(
+          _logger.info(
             {
-              requestId,
               operation: request.operationName,
               status: context.response.http?.status,
               timings: {
@@ -134,31 +113,23 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
                   timings.validationStart && timings.executionStart
                     ? `${(timings.executionStart - timings.validationStart).toFixed(2)}ms`
                     : undefined,
-                execution: `${executionDuration.toFixed(2)}ms`,
+                execution: executionDuration ? `${executionDuration.toFixed(2)}ms` : 'N/A',
                 resolvers: Object.fromEntries(
                   Object.entries(timings.resolverTimings).map(([key, value]) => [key, `${value.toFixed(2)}ms`]),
                 ),
               },
-              responseSize: context.response.body ? JSON.stringify(context.response.body).length : undefined,
+              size: context.response.body ? JSON.stringify(context.response.body).length : undefined,
             },
             `Completed ${request.operationName || 'Unnamed'}`,
           );
         },
 
         async didEncounterErrors(context) {
-          childLogger.error(
+          _logger.error(
             {
-              requestId,
               operation: context.operation?.name?.value,
-              errors: context.errors.map((error) => ({
-                message: error.message,
-                path: error.path,
-                locations: error.locations,
-                extensions: error.extensions,
-                stack: process.env['NODE_ENV'] === 'development' ? error.stack : undefined,
-              })),
-              variables: sanitizeVariables(request.variables),
-              query: redactQuery(request.query),
+              errors: context.errors.map((error) => pino.stdSerializers.err(error)),
+              variables: request.variables,
             },
             `Failed ${request.operationName || 'Unnamed'}`,
           );
@@ -168,42 +139,4 @@ export function ApolloLoggerPlugin<T extends Record<string, any>>(options: Logge
   };
 
   return plugin;
-}
-
-function sanitizeHeaders(headers: HeaderMap | undefined): Record<string, string> {
-  if (!headers) return {};
-
-  const sensitiveKeys = ['authorization', 'cookie', 'x-api-key', 'secret', 'token'];
-  const sanitized: Record<string, string> = {};
-
-  headers.forEach((value, key) => {
-    const lowercaseKey = key.toLowerCase();
-    sanitized[key] = sensitiveKeys.some((sensitive) => lowercaseKey.includes(sensitive)) ? '[REDACTED]' : value;
-  });
-  return sanitized;
-}
-
-function redactQuery(query: string | undefined): string | undefined {
-  if (!query) return undefined;
-  return query.replace(/(password|token|secret|key)[^\n]*$/gim, '$1: [REDACTED]');
-}
-
-function sanitizeVariables(variables: any): any {
-  if (!variables) return undefined;
-
-  const sensitiveFields = ['password', 'token', 'secret', 'key', 'auth'];
-  const sanitize = (obj: any): any => {
-    if (typeof obj !== 'object' || obj === null) return obj;
-
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => {
-        if (sensitiveFields.some((field) => key.toLowerCase().includes(field))) {
-          return [key, '[REDACTED]'];
-        }
-        return [key, typeof value === 'object' ? sanitize(value) : value];
-      }),
-    );
-  };
-
-  return sanitize(variables);
 }

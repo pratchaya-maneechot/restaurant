@@ -1,62 +1,60 @@
-import type { NextFunction, Request, Response } from 'express';
+import { Metadata } from '@grpc/grpc-js';
+import { NextFunction, Request, Response } from 'express';
 import { Logger } from 'pino';
 import { v4 } from 'uuid';
 import { logger } from './logger';
 
-interface RequestWithLogger extends Request {
+export interface IExpressRequest extends Request {
   logger?: Logger;
+  metadata?: Metadata;
 }
 
-export const expressLoggerMiddleware = (req: RequestWithLogger, res: Response, next: () => NextFunction) => {
-  const childLogger = logger.createChild({
-    requestId: v4(),
-  });
+interface ExpressLoggerOptions {
+  logSlowRequestsThreshold?: number;
+}
 
-  req.logger = childLogger;
+export function expressLogger(options: ExpressLoggerOptions = {}) {
+  const { logSlowRequestsThreshold = 1000 } = options;
 
-  const startTime = Date.now();
-  res.on('finish', () => {
+  return (req: IExpressRequest, res: Response, next: NextFunction) => {
+    const requestStart = performance.now();
+    const requestId = v4();
+    const metadata = new Metadata();
+    metadata.add('X-Request-ID', requestId);
+    const childLogger = logger.child({ requestId });
+    const requestMsg = `${req.method} ${req.url}`;
+
+    req.logger = childLogger;
+    req.metadata = metadata;
+
     childLogger.info(
       {
         method: req.method,
         url: req.url,
-        statusCode: res.statusCode,
-        responseTime: `${Date.now() - startTime}ms`,
-      },
-      'Request completed',
-    );
-  });
-
-  next();
-};
-
-export const expressErrorLoggerMiddleware = (err: any, req: RequestWithLogger, res: Response) => {
-  const loggerToUse = req.logger || logger.getLogger();
-  loggerToUse.error(
-    {
-      error: {
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-      },
-      request: {
-        method: req.method,
-        url: req.url,
         headers: req.headers,
+        ip: req.ip || req.headers['x-forwarded-for'] || req.headers['x-real-ip'],
         query: req.query,
-        body: req.body,
       },
-      context: {
-        path: req.path,
-        ip: req.ip,
-        timestamp: new Date().toISOString(),
-      },
-    },
-    'Error occurred in request processing',
-  );
+      `Request started: ${requestMsg}`,
+    );
 
-  return res.status(err.httpCode || 500).json({
-    status: err.statusCode || '500',
-    message: err.message,
-  });
-};
+    res.on('finish', () => {
+      const requestEnd = performance.now();
+      const duration = requestEnd - requestStart;
+      const logLevel = duration > logSlowRequestsThreshold ? 'warn' : 'info';
+
+      childLogger[logLevel](
+        {
+          method: req.method,
+          url: req.url,
+          status: res.statusCode,
+          duration: `${duration.toFixed(2)}ms`,
+          size: res.get('Content-Length') || undefined,
+        },
+        `Request completed: ${requestMsg}`,
+      );
+    });
+
+    next();
+  };
+}
