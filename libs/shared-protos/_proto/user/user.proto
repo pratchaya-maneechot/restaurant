@@ -2,6 +2,23 @@ syntax = "proto3";
 package user;
 option go_package = "user/proto";
 
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  optional string phone = 4;
+}
+
+message LoginUserRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginUserResponse {
+  User user = 1;
+  string token = 2;
+}
+
 message RegisterUserRequest {
   string email = 1;
   string password = 2;
