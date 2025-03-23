@@ -4,7 +4,7 @@ import { ReservationServiceClient, UserServiceClient } from '@restaurant/shared-
 export interface IAuthentication {
   id: string;
 }
-export interface IAppContetxt extends BaseContext {
+export interface IAppContext extends BaseContext {
   identity: IAuthentication;
   service: {
     user: UserServiceClient;

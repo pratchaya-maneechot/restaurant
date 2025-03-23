@@ -7,10 +7,10 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { ApolloLoggerPlugin, logger } from '@restaurant/shared-utils';
 import http from 'http';
 import { resolvers, typeDefs } from './schema';
-import { IAppContetxt } from './types';
+import { IAppContext } from './types';
 
 export async function graphqlServer(httpServer: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>) {
-  const plugins: ApolloServerPlugin<IAppContetxt>[] = [
+  const plugins: ApolloServerPlugin<IAppContext>[] = [
     ApolloServerPluginDrainHttpServer({ httpServer }),
     ApolloServerPluginInlineTraceDisabled(),
     ApolloLoggerPlugin({

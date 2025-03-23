@@ -1,9 +1,9 @@
 import { RegisterUserResponse__Output } from '@restaurant/shared-proto-ts';
-import { IAppContetxt } from '../types';
+import { IAppContext } from '../types';
 
 const userResolver = {
   Mutation: {
-    register: async (_parent, args, ctx: IAppContetxt) => {
+    register: async (_parent, args, ctx: IAppContext) => {
       const resp = await new Promise<RegisterUserResponse__Output>((resolve, reject) => {
         ctx.service.user.RegisterUser(args.input, (err, value) => {
           if (err) {
