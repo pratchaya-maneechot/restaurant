@@ -1,5 +1,6 @@
 import { BaseContext } from '@apollo/server';
-import { ReservationServiceClient, UserServiceClient } from '@restaurant/shared-proto-ts';
+import { IReservationServiceClient } from '../services/reservation.service';
+import { IUserServiceClient } from '../services/user.service';
 
 export interface IAuthentication {
   id: string;
@@ -7,7 +8,7 @@ export interface IAuthentication {
 export interface IAppContext extends BaseContext {
   identity: IAuthentication;
   service: {
-    user: UserServiceClient;
-    reservation: ReservationServiceClient;
+    user: IUserServiceClient;
+    reservation: IReservationServiceClient;
   };
 }
