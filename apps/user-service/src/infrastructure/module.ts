@@ -1,4 +1,4 @@
-import { G_TYPES, ICommandBus, IQuery, IQueryBus } from '@restaurant/core-domain';
+import { AuthProvider, G_TYPES, IAuthProvider, ICommandBus, IQuery, IQueryBus } from '@restaurant/core-domain';
 import { AsyncContainerModule, interfaces } from 'inversify';
 import { TYPES } from '../config/types';
 import { IUserRepository } from '../domain/repositories';
@@ -10,4 +10,5 @@ export const module = new AsyncContainerModule(async (bind: interfaces.Bind) => 
   bind<ICommandBus>(G_TYPES.CommandBus).toConstantValue(new CommandBus());
   bind<IQueryBus<IQuery>>(G_TYPES.QueryBus).toConstantValue(new QueryBus());
   bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
+  bind<IAuthProvider>(G_TYPES.AuthProvider).to(AuthProvider).inSingletonScope();
 });

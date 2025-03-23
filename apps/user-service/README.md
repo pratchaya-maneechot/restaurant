@@ -9,12 +9,13 @@ This service handles all user-related operations, ensuring proper authentication
 ### **Responsibilities**
 
 - Register new users (customers and staff).
+- Login users (customers and staff).
 - Update user details (e.g., name, contact info).
 - Delete user accounts when requested.
 
 ### **Key Components**
 
-- **Commands:** RegisterUser, UpdateUser, DeleteUser
+- **Commands:** LoginUser, RegisterUser, UpdateUser, DeleteUser
 - **Aggregate:** User - Represents the user entity.
 - **Events:** UserRegistered, UserUpdated, UserDeleted
 

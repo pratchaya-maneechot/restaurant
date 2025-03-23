@@ -1,16 +1,17 @@
 import {
   DeleteUserRequest,
   DeleteUserResponse,
+  LoginUserResponse,
   RegisterUserResponse,
   UpdateUserResponse,
   UserServiceHandlers,
 } from '@restaurant/shared-proto-ts';
 import { z } from 'zod';
-import { RegisterUserCommand, UpdateUserCommand } from '../../../application';
+import { LoginUserCommand, RegisterUserCommand, UpdateUserCommand } from '../../../application';
 import { UserModel } from '../../../domain/models';
 import { grpc } from '../interceptors';
 import { IContextHandler } from '../types';
-import { RegisterUserSchema, UpdateUserSchema } from './schema';
+import { LoginUserResponseSchema, LoginUserSchema, RegisterUserSchema, UpdateUserSchema } from './schema';
 
 export function userHandler(ctx: IContextHandler): UserServiceHandlers {
   return {
@@ -21,6 +22,13 @@ export function userHandler(ctx: IContextHandler): UserServiceHandlers {
         return {
           message: caller.request.userId,
         };
+      }),
+    LoginUser: grpc
+      .input(LoginUserSchema)
+      .output<LoginUserResponse>(LoginUserResponseSchema)
+      .handler(async (caller) => {
+        const result = await ctx.commandBus.send(new LoginUserCommand(caller.request));
+        return result;
       }),
     RegisterUser: grpc
       .input(RegisterUserSchema)
