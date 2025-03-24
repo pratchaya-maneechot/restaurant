@@ -6,5 +6,6 @@
   },
   "editor.formatOnSave": true,
   "eslint.validate": ["json"],
-  "cSpell.words": ["iconify", "protos"]
+  "cSpell.words": ["iconify", "protos"],
+  "i18n-ally.localesPaths": ["apps/website/src/locales", "apps/website/src/locales/langs"]
 }
