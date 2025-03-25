@@ -2,12 +2,12 @@
 
 import merge from 'lodash/merge';
 // date fns
-import { enUS as enUSAdapter, th as thAdapter } from 'date-fns/locale';
+import { enUS as enUSAdapter } from 'date-fns/locale';
 
 // date pickers (MUI)
 import { enUS as enUSDate } from '@mui/x-date-pickers/locales';
 // core (MUI)
-import { enUS as enUSCore, thTH as thTHCore } from '@mui/material/locale';
+import { enUS as enUSCore } from '@mui/material/locale';
 
 // PLEASE REMOVE `LOCAL STORAGE` WHEN YOU CHANGE SETTINGS.
 // ----------------------------------------------------------------------
@@ -24,17 +24,17 @@ export const allLangs = [
       currency: 'USD',
     },
   },
-  {
-    label: 'Thailand',
-    value: 'th',
-    systemValue: merge(enUSDate, thTHCore),
-    adapterLocale: thAdapter,
-    icon: 'flagpack:gb-nir',
-    numberFormat: {
-      code: 'th-TH',
-      currency: 'THB',
-    },
-  },
+  // {
+  //   label: 'Thailand',
+  //   value: 'th',
+  //   systemValue: merge(enUSDate, thTHCore),
+  //   adapterLocale: thAdapter,
+  //   icon: 'flagpack:gb-nir',
+  //   numberFormat: {
+  //     code: 'th-TH',
+  //     currency: 'THB',
+  //   },
+  // },
 ];
 
 export const defaultLang = allLangs[0]; // English

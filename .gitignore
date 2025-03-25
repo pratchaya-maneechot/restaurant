@@ -69,3 +69,5 @@ out
 .infracost
 
 wire_gen.go
+
+storybook-static
