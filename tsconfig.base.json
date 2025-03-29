@@ -22,7 +22,8 @@
       "@restaurant/graphql-codegen": ["tools/graphql-codegen/src/index.ts"],
       "@restaurant/shared-proto-ts": ["libs/shared-protos/typescript/src/index.ts"],
       "@restaurant/shared-utils": ["libs/shared-utils/src/index.ts"],
-      "@restaurant/structure-generator": ["tools/structure/src/index.ts"]
+      "@restaurant/structure-generator": ["tools/structure/src/index.ts"],
+      "@restaurant/website-graphql": ["libs/website-graphql/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -4,13 +4,7 @@ import { mergeSchemas } from '../libs/merge-schema';
 import { ApolloClientExecutorSchema } from './schema';
 
 const runExecutor: PromiseExecutor<ApolloClientExecutorSchema> = async (options, context) => {
-  const mergedSchema = mergeSchemas(`${context.root}/libs`, 'src/subgraphs/schemas', [
-    'faculty',
-    'student',
-    'personnel',
-    'auth',
-    'curriculum',
-  ]);
+  const mergedSchema = mergeSchemas(`${context.root}/apps`, 'src/graphql/schema', ['gateway-service']);
 
   const config: CodegenConfig = {
     overwrite: true,

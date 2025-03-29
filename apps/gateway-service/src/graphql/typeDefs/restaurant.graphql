@@ -1,0 +1,53 @@
+type Restaurant {
+  id: ID!
+  name: String!
+  address: RestaurantAddress!
+  cuisineType: String!
+  phoneNumber: String
+  email: String
+  website: String
+  operatingHours: [OperatingHours!]
+  rating: Float
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type RestaurantAddress {
+  street: String!
+  city: String!
+  state: String!
+  zipCode: String!
+  country: String!
+  latitude: Float
+  longitude: Float
+}
+
+type OperatingHours {
+  dayOfWeek: DayOfWeek!
+  openTime: String!
+  closeTime: String!
+  isClosed: Boolean!
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+type Query {
+  restaurant(id: ID!): Restaurant
+  restaurants(filter: RestaurantFilterInput): [Restaurant!]!
+  restaurantsByCuisine(cuisineType: String!): [Restaurant!]!
+}
+
+type Mutation {
+  createRestaurant(input: RestaurantInput!): OperationCompleted!
+  updateRestaurant(id: ID!, input: RestaurantUpdateInput!): OperationCompleted!
+  deactivateRestaurant(id: ID!): OperationCompleted!
+}

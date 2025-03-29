@@ -1,12 +1,12 @@
 {
   "executors": {
     "apollo-server": {
-      "implementation": "./src/executor/apollo-server/executor",
+      "implementation": "./src/executor/apollo-server/executor.ts",
       "schema": "./src/executor/apollo-server/schema.json",
       "description": "apollo-server executor"
     },
     "apollo-client": {
-      "implementation": "./src/executor/apollo-client/executor",
+      "implementation": "./src/executor/apollo-client/executor.ts",
       "schema": "./src/executor/apollo-client/schema.json",
       "description": "apollo-client executor"
     }

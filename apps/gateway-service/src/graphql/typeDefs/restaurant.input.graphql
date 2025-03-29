@@ -1,0 +1,43 @@
+input RestaurantInput {
+  name: String!
+  address: RestaurantAddressInput!
+  cuisineType: String!
+  phoneNumber: String
+  email: String
+  website: String
+  operatingHours: [OperatingHoursInput!]
+}
+
+input RestaurantAddressInput {
+  street: String!
+  city: String!
+  state: String!
+  zipCode: String!
+  country: String!
+  latitude: Float
+  longitude: Float
+}
+
+input OperatingHoursInput {
+  dayOfWeek: DayOfWeek!
+  openTime: String!
+  closeTime: String!
+  isClosed: Boolean!
+}
+
+input RestaurantUpdateInput {
+  name: String
+  address: RestaurantAddressInput
+  cuisineType: String
+  phoneNumber: String
+  email: String
+  website: String
+  operatingHours: [OperatingHoursInput!]
+  isActive: Boolean
+}
+
+input RestaurantFilterInput {
+  q: String
+  limit: Int
+  offset: Int
+}

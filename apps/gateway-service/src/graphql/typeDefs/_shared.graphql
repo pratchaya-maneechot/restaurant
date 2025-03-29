@@ -1,3 +1,4 @@
 type OperationCompleted {
   id: ID!
 }
+scalar DateTime

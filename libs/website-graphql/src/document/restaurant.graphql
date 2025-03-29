@@ -1,0 +1,109 @@
+fragment RestaurantBasicInfo on Restaurant {
+  id
+  name
+  cuisineType
+  isActive
+}
+
+fragment RestaurantDetails on Restaurant {
+  ...RestaurantBasicInfo
+  phoneNumber
+  email
+  website
+  rating
+  createdAt
+  updatedAt
+  address {
+    street
+    city
+    state
+    zipCode
+    country
+    latitude
+    longitude
+  }
+  operatingHours {
+    dayOfWeek
+    openTime
+    closeTime
+    isClosed
+  }
+}
+
+fragment AddressDetails on RestaurantAddress {
+  street
+  city
+  state
+  zipCode
+  country
+  latitude
+  longitude
+}
+
+fragment HoursInfo on OperatingHours {
+  dayOfWeek
+  openTime
+  closeTime
+  isClosed
+}
+
+query GetRestaurant($id: ID!) {
+  restaurant(id: $id) {
+    ...RestaurantDetails
+  }
+}
+
+query GetRestaurants($filter: RestaurantFilterInput) {
+  restaurants(filter: $filter) {
+    ...RestaurantBasicInfo
+    address {
+      city
+      state
+    }
+  }
+}
+
+query GetRestaurantsByCuisine($cuisineType: String!) {
+  restaurantsByCuisine(cuisineType: $cuisineType) {
+    ...RestaurantBasicInfo
+    rating
+  }
+}
+
+query GetRestaurantHours($id: ID!) {
+  restaurant(id: $id) {
+    id
+    name
+    operatingHours {
+      ...HoursInfo
+    }
+  }
+}
+
+query GetRestaurantLocation($id: ID!) {
+  restaurant(id: $id) {
+    id
+    name
+    address {
+      ...AddressDetails
+    }
+  }
+}
+
+mutation CreateRestaurant($input: RestaurantInput!) {
+  createRestaurant(input: $input) {
+    id
+  }
+}
+
+mutation UpdateRestaurant($id: ID!, $input: RestaurantUpdateInput!) {
+  updateRestaurant(id: $id, input: $input) {
+    id
+  }
+}
+
+mutation DeactivateRestaurant($id: ID!) {
+  deactivateRestaurant(id: $id) {
+    id
+  }
+}

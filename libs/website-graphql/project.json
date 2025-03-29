@@ -1,0 +1,26 @@
+{
+  "name": "website-graphql",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/website-graphql/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/website-graphql",
+        "main": "libs/website-graphql/src/index.ts",
+        "tsConfig": "libs/website-graphql/tsconfig.lib.json",
+        "assets": ["libs/website-graphql/*.md"]
+      }
+    },
+    "codegen": {
+      "executor": "@restaurant/graphql-codegen:apollo-client",
+      "options": {
+        "documentPath": "src/**/**.graphql",
+        "generatedPath": "src/lib/generated.ts"
+      }
+    }
+  }
+}

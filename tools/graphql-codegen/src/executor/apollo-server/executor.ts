@@ -4,11 +4,11 @@ import { print } from 'graphql';
 import { ApolloServerExecutorSchema } from './schema';
 
 const runExecutor: PromiseExecutor<ApolloServerExecutorSchema> = async (options, context) => {
-  const projectRoot = `${context.root}/libs/${context.projectName}`;
-  const baseSchemaPath = `${projectRoot}/src/subgraphs/schemas`;
+  const projectRoot = `${context.root}/apps/${context.projectName}`;
+  const baseSchemaPath = `${projectRoot}/src/graphql/schema`;
   const typeDefs = require(baseSchemaPath).typeDefs;
 
-  const generates = `${projectRoot}/src/subgraphs/generated.ts`;
+  const generates = `${projectRoot}/src/graphql/generated.ts`;
 
   const config: CodegenConfig & { name?: string } = {
     name: context.projectName,

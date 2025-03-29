@@ -72,6 +72,12 @@
           "command": "docker build -f apps/gateway-service/Dockerfile . -t backend"
         }
       }
+    },
+    "codegen": {
+      "metadata": {
+        "cwd": "libs/auth"
+      },
+      "executor": "@restaurant/graphql-codegen:apollo-server"
     }
   }
 }
