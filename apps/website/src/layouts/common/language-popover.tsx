@@ -4,11 +4,11 @@ import { useCallback } from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 
-import { useLocales, useTranslate } from 'src/locales';
+import { useLocales, useTranslate } from '@src/locales';
 
-import { varHover } from 'src/components/animate';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import Iconify from 'src/components/iconify';
+import { varHover } from '@src/components/animate';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

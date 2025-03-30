@@ -1,6 +1,7 @@
 type Restaurant {
   id: ID!
   name: String!
+  photos: [String!]!
   address: RestaurantAddress!
   cuisineType: String!
   phoneNumber: String

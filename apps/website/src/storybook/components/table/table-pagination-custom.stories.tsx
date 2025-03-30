@@ -1,6 +1,6 @@
+import { TablePaginationCustom } from '@src/components/table';
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import TablePaginationCustom from '../table-pagination-custom';
 
 const meta: Meta<typeof TablePaginationCustom> = {
   title: 'Components/Table/TablePaginationCustom',

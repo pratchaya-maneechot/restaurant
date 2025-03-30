@@ -3,6 +3,7 @@
 const ROOTS = {
   AUTH: '/auth',
   DASHBOARD: '/dashboard',
+  RESTAURANT: '/restaurant',
 };
 
 // ----------------------------------------------------------------------
@@ -21,5 +22,9 @@ export const paths = {
       register: `${ROOTS.AUTH}/firebase/register`,
       forgotPassword: `${ROOTS.AUTH}/firebase/forgot-password`,
     },
+  },
+  //
+  restaurant: {
+    details: (slug = '') => `${ROOTS.RESTAURANT}/${slug}`,
   },
 };

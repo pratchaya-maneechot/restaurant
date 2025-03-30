@@ -9,16 +9,16 @@ import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import { useRouter } from 'src/routes/hooks';
-import { paths } from 'src/routes/paths';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths';
 
-import { useMockedUser } from 'src/hooks/use-mocked-user';
+import { useMockedUser } from '@src/hooks/use-mocked-user';
 
-import { useAuthContext } from 'src/auth/hooks';
+import { useAuthContext } from '@src/auth/hooks';
 
-import { varHover } from 'src/components/animate';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import { useSnackbar } from 'src/components/snackbar';
+import { varHover } from '@src/components/animate';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
+import { useSnackbar } from '@src/components/snackbar';
 
 // ----------------------------------------------------------------------
 

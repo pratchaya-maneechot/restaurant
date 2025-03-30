@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react';
 import { SettingsProvider } from '../src/components/settings';
+import { LocalizationProvider } from '../src/locales';
 import ThemeProvider from '../src/theme';
 
 export const decorators: Preview['decorators'] = [
@@ -7,20 +8,22 @@ export const decorators: Preview['decorators'] = [
     const { themeMode, themeDirection, themeContrast, themeLayout, themeColorPresets, themeStretch } = context.globals;
 
     return (
-      <SettingsProvider
-        defaultSettings={{
-          themeMode: themeMode || 'light',
-          themeDirection: themeDirection || 'ltr',
-          themeContrast: themeContrast || 'default',
-          themeLayout: themeLayout || 'vertical',
-          themeColorPresets: themeColorPresets || 'default',
-          themeStretch: themeStretch || false,
-        }}
-      >
-        <ThemeProvider>
-          <Story />
-        </ThemeProvider>
-      </SettingsProvider>
+      <LocalizationProvider>
+        <SettingsProvider
+          defaultSettings={{
+            themeMode: themeMode || 'light',
+            themeDirection: themeDirection || 'ltr',
+            themeContrast: themeContrast || 'default',
+            themeLayout: themeLayout || 'vertical',
+            themeColorPresets: themeColorPresets || 'default',
+            themeStretch: themeStretch || false,
+          }}
+        >
+          <ThemeProvider>
+            <Story />
+          </ThemeProvider>
+        </SettingsProvider>
+      </LocalizationProvider>
     );
   },
 ];

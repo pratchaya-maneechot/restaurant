@@ -1,5 +1,5 @@
+import { TableNoData } from '@src/components/table';
 import { Meta, StoryObj } from '@storybook/react';
-import TableNoData from '../table-no-data';
 
 const meta: Meta<typeof TableNoData> = {
   title: 'Components/Table/TableNoData',

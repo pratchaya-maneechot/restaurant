@@ -7,10 +7,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { fToNow } from 'src/utils/format-time';
+import { fToNow } from '@src/utils/format-time';
 
-import FileThumbnail from 'src/components/file-thumbnail';
-import Label from 'src/components/label';
+import FileThumbnail from '@src/components/file-thumbnail';
+import Label from '@src/components/label';
 
 // ----------------------------------------------------------------------
 

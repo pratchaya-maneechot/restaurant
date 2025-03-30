@@ -23,7 +23,8 @@
     "types": ["jest", "node"],
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["./src/*"]
+      "@src/*": ["./src/*"],
+      "@generated/graphql": ["../../libs/website-graphql/src/index.ts"]
     }
   },
   "include": [

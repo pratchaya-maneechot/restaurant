@@ -4,11 +4,11 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 
-import { useMockedUser } from 'src/hooks/use-mocked-user';
+import { useMockedUser } from '@src/hooks/use-mocked-user';
 
-import Label from 'src/components/label';
+import Label from '@src/components/label';
 
 // ----------------------------------------------------------------------
 

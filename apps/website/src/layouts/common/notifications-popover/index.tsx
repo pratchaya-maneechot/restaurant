@@ -14,15 +14,15 @@ import Tabs from '@mui/material/Tabs';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useBoolean } from '@src/hooks/use-boolean';
+import { useResponsive } from '@src/hooks/use-responsive';
 
-import { _notifications } from 'src/_mock';
+import { _notifications } from '@src/_mock';
 
-import { varHover } from 'src/components/animate';
-import Iconify from 'src/components/iconify';
-import Label from 'src/components/label';
-import Scrollbar from 'src/components/scrollbar';
+import { varHover } from '@src/components/animate';
+import Iconify from '@src/components/iconify';
+import Label from '@src/components/label';
+import Scrollbar from '@src/components/scrollbar';
 
 import NotificationItem from './notification-item';
 

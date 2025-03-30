@@ -13,7 +13,6 @@ type Props = {
 
 export default function LocalizationProvider({ children }: Props) {
   const { currentLang } = useLocales();
-
   return (
     <MuiLocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={currentLang.adapterLocale}>
       {children}

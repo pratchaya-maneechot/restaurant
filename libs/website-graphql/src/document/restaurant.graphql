@@ -1,8 +1,9 @@
 fragment RestaurantBasicInfo on Restaurant {
   id
   name
-  cuisineType
+  photos
   isActive
+  cuisineType
 }
 
 fragment RestaurantDetails on Restaurant {

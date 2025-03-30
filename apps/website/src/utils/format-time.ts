@@ -1,3 +1,4 @@
+import { OperatingHours } from '@generated/graphql';
 import { format, formatDistanceToNow, getTime } from 'date-fns';
 
 // ----------------------------------------------------------------------
@@ -49,3 +50,8 @@ export function isAfter(startDate: Date | null, endDate: Date | null) {
 
   return results;
 }
+
+export const findTodayOperatingHours = (operatingHours: OperatingHours[]): OperatingHours | undefined => {
+  const today = format(new Date(), 'EEEE');
+  return operatingHours.find((hours) => hours.dayOfWeek === today.toUpperCase());
+};

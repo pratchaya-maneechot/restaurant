@@ -50,5 +50,12 @@
   "upgrade_to_pro": "Upgrade to Pro",
   "demo": {
     "title": "English"
+  },
+  "sections": {
+    "restaurant": {
+      "restaurant_card": {
+        "close": "Close"
+      }
+    }
   }
 }

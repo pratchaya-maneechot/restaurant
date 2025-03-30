@@ -50,5 +50,12 @@
   "upgrade_to_pro": "อัปเกรดเป็นโปร",
   "demo": {
     "title": "ภาษาอังกฤษ"
+  },
+  "sections": {
+    "restaurant": {
+      "restaurant_card": {
+        "close": "ปิด"
+      }
+    }
   }
 }
