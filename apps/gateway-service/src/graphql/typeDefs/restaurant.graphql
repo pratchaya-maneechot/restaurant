@@ -1,54 +1,337 @@
-type Restaurant {
+"""
+Represents a review submitted by a user for a restaurant
+"""
+type RestaurantReview {
+  """
+  Unique identifier for the review
+  """
   id: ID!
+  """
+  Name or username of the reviewer
+  """
   name: String!
+  """
+  Rating given by the reviewer (typically 1-5)
+  """
+  rating: Int!
+  """
+  Text content of the review
+  """
+  comment: String!
+  """
+  Number of users who found this review helpful
+  """
+  helpful: Int!
+  """
+  URL to the reviewer’s avatar image
+  """
+  avatarUrl: String!
+  """
+  Indicates if the reviewer has made a purchase (verified review)
+  """
+  isPurchased: Boolean!
+  """
+  List of URLs to attached photos or files
+  """
+  attachments: [String!]
+  """
+  Date and time when the review was posted
+  """
+  postedAt: DateTime!
+  """
+  Date and time when the review was last updated (optional)
+  """
+  updatedAt: DateTime
+}
+
+"""
+Represents aggregated rating data for a specific aspect of a restaurant
+"""
+type RestaurantRating {
+  """
+  Name of the rating category (e.g., "Food Quality", "Service")
+  """
+  name: String!
+  """
+  Average star count for this category (1-5)
+  """
+  starCount: Int!
+  """
+  Number of reviews contributing to this rating
+  """
+  reviewCount: Int!
+}
+
+"""
+Represents a restaurant entity with all its details
+"""
+type Restaurant {
+  """
+  Unique identifier for the restaurant
+  """
+  id: ID!
+  """
+  Name of the restaurant
+  """
+  name: String!
+  """
+  URL-friendly unique identifier for the restaurant (e.g., "tasty-italian-bistro")
+  """
+  slug: String!
+  """
+  List of URLs to restaurant photos
+  """
   photos: [String!]!
+  """
+  Address details of the restaurant
+  """
   address: RestaurantAddress!
-  cuisineType: String!
-  phoneNumber: String
+  """
+  Types of cuisine offered (e.g., ["Italian", "Thai"])
+  """
+  cuisineType: [String!]!
+  """
+  Contact phone number of the restaurant
+  """
+  phoneNumber: String!
+  """
+  Contact email address of the restaurant (optional)
+  """
   email: String
+  """
+  Website URL of the restaurant (optional)
+  """
   website: String
-  operatingHours: [OperatingHours!]
-  rating: Float
+  """
+  Operating hours for each day of the week
+  """
+  operatingHours: [OperatingHours!]!
+  """
+  Detailed description of the restaurant
+  """
+  description: String!
+  """
+  Short summary or tagline of the restaurant
+  """
+  subDescription: String!
+  """
+  List of aggregated ratings for different aspects
+  """
+  ratings: [RestaurantRating!]!
+  """
+  List of user reviews for the restaurant
+  """
+  reviews: [RestaurantReview!]!
+  """
+  Average rating across all reviews
+  """
+  totalRatings: Float!
+  """
+  Total number of reviews
+  """
+  totalReviews: Int!
+  """
+  Indicates if the restaurant is currently active
+  """
   isActive: Boolean!
+  """
+  Date and time when the restaurant was created
+  """
   createdAt: DateTime!
+  """
+  Date and time when the restaurant was last updated
+  """
   updatedAt: DateTime!
+  """
+  List of recommended menu items
+  """
+  recommendedMenus: [MenuItem!]
+  """
+  List of available facilities (e.g., "Wi-Fi", "Parking")
+  """
+  facilities: [String!]
+  """
+  List of atmosphere descriptors (e.g., "Casual", "Romantic")
+  """
+  atmosphere: [String!]
+  """
+  List of languages spoken by staff (e.g., "English", "Thai")
+  """
+  serviceLanguages: [String!]
+  """
+  List of accepted payment methods (e.g., "Cash", "Credit Card")
+  """
+  paymentMethods: [String!]
+  """
+  URL for making reservations (optional)
+  """
+  reservationUrl: String
+  """
+  Indicates if the restaurant is officially verified
+  """
+  isVerified: Boolean!
 }
 
+"""
+Represents the physical address of a restaurant
+"""
 type RestaurantAddress {
+  """
+  Street address of the restaurant
+  """
   street: String!
+  """
+  City where the restaurant is located
+  """
   city: String!
+  """
+  State or province of the restaurant
+  """
   state: String!
+  """
+  ZIP or postal code
+  """
   zipCode: String!
+  """
+  Country where the restaurant is located
+  """
   country: String!
-  latitude: Float
-  longitude: Float
+  """
+  Latitude coordinate for geo location
+  """
+  latitude: Float!
+  """
+  Longitude coordinate for geo location
+  """
+  longitude: Float!
 }
 
+"""
+Represents operating hours for a specific day of the week
+"""
 type OperatingHours {
+  """
+  Day of the week (e.g., MONDAY)
+  """
   dayOfWeek: DayOfWeek!
+  """
+  Opening time in HH:MM format (e.g., "09:00")
+  """
   openTime: String!
+  """
+  Closing time in HH:MM format (e.g., "22:00")
+  """
   closeTime: String!
+  """
+  Indicates if the restaurant is closed on this day
+  """
   isClosed: Boolean!
 }
 
+"""
+Represents a recommended menu item offered by the restaurant
+"""
+type MenuItem {
+  """
+  Name of the menu item
+  """
+  name: String!
+  """
+  Description of the menu item (optional)
+  """
+  description: String
+  """
+  Price of the menu item
+  """
+  price: Float!
+  """
+  URL to an image of the menu item (optional)
+  """
+  imageUrl: String
+  """
+  Indicates if the menu item is currently available
+  """
+  isAvailable: Boolean!
+}
+
+"""
+Enum representing the days of the week
+"""
 enum DayOfWeek {
+  """
+  Monday
+  """
   MONDAY
+  """
+  Tuesday
+  """
   TUESDAY
+  """
+  Wednesday
+  """
   WEDNESDAY
+  """
+  Thursday
+  """
   THURSDAY
+  """
+  Friday
+  """
   FRIDAY
+  """
+  Saturday
+  """
   SATURDAY
+  """
+  Sunday
+  """
   SUNDAY
 }
 
+"""
+Root query type for retrieving restaurant data
+"""
 type Query {
+  """
+  Retrieve a single restaurant by its ID
+  """
   restaurant(id: ID!): Restaurant
+  """
+  Retrieve a single restaurant by its slug
+  """
+  restaurantBySlug(slug: String!): Restaurant
+  """
+  Retrieve a list of restaurants based on filter criteria
+  """
   restaurants(filter: RestaurantFilterInput): [Restaurant!]!
+  """
+  Retrieve a list of restaurants by cuisine type
+  """
   restaurantsByCuisine(cuisineType: String!): [Restaurant!]!
+  """
+  Retrieve a list of restaurants near a specific location within a radius (in kilometers)
+  """
+  nearbyRestaurants(latitude: Float!, longitude: Float!, radius: Float!): [Restaurant!]!
 }
 
+"""
+Root mutation type for modifying restaurant data
+"""
 type Mutation {
+  """
+  Create a new restaurant with the provided input
+  """
   createRestaurant(input: RestaurantInput!): OperationCompleted!
+  """
+  Update an existing restaurant by ID with the provided input
+  """
   updateRestaurant(id: ID!, input: RestaurantUpdateInput!): OperationCompleted!
+  """
+  Deactivate a restaurant by ID
+  """
   deactivateRestaurant(id: ID!): OperationCompleted!
+  """
+  Add a review to a restaurant by ID with the provided input
+  """
+  addReview(restaurantId: ID!, input: RestaurantReviewInput!): OperationCompleted!
 }

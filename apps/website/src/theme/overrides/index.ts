@@ -22,7 +22,6 @@ import { dialog } from './components/dialog';
 import { drawer } from './components/drawer';
 import { fab } from './components/fab';
 import { list } from './components/list';
-import { loadingButton } from './components/loading-button';
 import { menu } from './components/menu';
 import { pagination } from './components/pagination';
 import { paper } from './components/paper';
@@ -93,7 +92,6 @@ export function componentsOverrides(theme: Theme) {
     cssBaseline(theme),
     autocomplete(theme),
     toggleButton(theme),
-    loadingButton(theme),
   );
 
   return components;

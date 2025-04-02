@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
-import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -22,6 +21,7 @@ import { useBoolean } from '@src/hooks/use-boolean';
 import { useAuthContext } from '@src/auth/hooks';
 import { PATH_AFTER_LOGIN } from '@src/config-global';
 
+import Button from '@mui/material/Button';
 import FormProvider, { RHFTextField } from '@src/components/hook-form';
 import Iconify from '@src/components/iconify';
 
@@ -110,9 +110,9 @@ export default function JwtLoginView() {
         Forgot password?
       </Link>
 
-      <LoadingButton fullWidth color="inherit" size="large" type="submit" variant="contained" loading={isSubmitting}>
+      <Button fullWidth color="inherit" size="large" type="submit" variant="contained" loading={isSubmitting}>
         Login
-      </LoadingButton>
+      </Button>
     </Stack>
   );
 

@@ -1,37 +1,24 @@
-fragment RestaurantBasicInfo on Restaurant {
+# Fragments
+fragment RestaurantReviewFragment on RestaurantReview {
   id
   name
-  photos
-  isActive
-  cuisineType
-}
-
-fragment RestaurantDetails on Restaurant {
-  ...RestaurantBasicInfo
-  phoneNumber
-  email
-  website
   rating
-  createdAt
+  comment
+  helpful
+  avatarUrl
+  isPurchased
+  attachments
+  postedAt
   updatedAt
-  address {
-    street
-    city
-    state
-    zipCode
-    country
-    latitude
-    longitude
-  }
-  operatingHours {
-    dayOfWeek
-    openTime
-    closeTime
-    isClosed
-  }
 }
 
-fragment AddressDetails on RestaurantAddress {
+fragment RestaurantRatingFragment on RestaurantRating {
+  name
+  starCount
+  reviewCount
+}
+
+fragment RestaurantAddressFragment on RestaurantAddress {
   street
   city
   state
@@ -41,70 +28,108 @@ fragment AddressDetails on RestaurantAddress {
   longitude
 }
 
-fragment HoursInfo on OperatingHours {
+fragment OperatingHoursFragment on OperatingHours {
   dayOfWeek
   openTime
   closeTime
   isClosed
 }
 
+fragment MenuItemFragment on MenuItem {
+  name
+  description
+  price
+  imageUrl
+  isAvailable
+}
+
+fragment RestaurantFragment on Restaurant {
+  id
+  name
+  slug
+  photos
+  address {
+    ...RestaurantAddressFragment
+  }
+  cuisineType
+  phoneNumber
+  email
+  website
+  operatingHours {
+    ...OperatingHoursFragment
+  }
+  description
+  subDescription
+  ratings {
+    ...RestaurantRatingFragment
+  }
+  reviews {
+    ...RestaurantReviewFragment
+  }
+  totalRatings
+  totalReviews
+  isActive
+  createdAt
+  updatedAt
+  recommendedMenus {
+    ...MenuItemFragment
+  }
+  facilities
+  atmosphere
+  serviceLanguages
+  paymentMethods
+  reservationUrl
+  isVerified
+}
+# Queries
 query GetRestaurant($id: ID!) {
   restaurant(id: $id) {
-    ...RestaurantDetails
+    ...RestaurantFragment
   }
 }
 
 query GetRestaurants($filter: RestaurantFilterInput) {
   restaurants(filter: $filter) {
-    ...RestaurantBasicInfo
-    address {
-      city
-      state
-    }
+    ...RestaurantFragment
   }
 }
 
 query GetRestaurantsByCuisine($cuisineType: String!) {
   restaurantsByCuisine(cuisineType: $cuisineType) {
-    ...RestaurantBasicInfo
-    rating
+    ...RestaurantFragment
   }
 }
 
-query GetRestaurantHours($id: ID!) {
-  restaurant(id: $id) {
-    id
-    name
-    operatingHours {
-      ...HoursInfo
-    }
+query GetNearbyRestaurants($latitude: Float!, $longitude: Float!, $radius: Float!) {
+  nearbyRestaurants(latitude: $latitude, longitude: $longitude, radius: $radius) {
+    ...RestaurantFragment
   }
 }
-
-query GetRestaurantLocation($id: ID!) {
-  restaurant(id: $id) {
-    id
-    name
-    address {
-      ...AddressDetails
-    }
-  }
-}
-
+# Mutations
 mutation CreateRestaurant($input: RestaurantInput!) {
   createRestaurant(input: $input) {
-    id
+    success
+    message
   }
 }
 
 mutation UpdateRestaurant($id: ID!, $input: RestaurantUpdateInput!) {
   updateRestaurant(id: $id, input: $input) {
-    id
+    success
+    message
   }
 }
 
 mutation DeactivateRestaurant($id: ID!) {
   deactivateRestaurant(id: $id) {
-    id
+    success
+    message
+  }
+}
+
+mutation AddReview($restaurantId: ID!, $input: RestaurantReviewInput!) {
+  addReview(restaurantId: $restaurantId, input: $input) {
+    success
+    message
   }
 }

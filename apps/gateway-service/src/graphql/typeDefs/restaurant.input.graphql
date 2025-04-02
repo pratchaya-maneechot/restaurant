@@ -1,43 +1,281 @@
+"""
+Input type for filtering restaurants based on various criteria
+"""
+input RestaurantFilterInput {
+  """
+  Filter by one or more cuisine types (e.g., ["Italian", "Thai"])
+  """
+  cuisineType: [String!]
+  """
+  Filter by city name
+  """
+  city: String
+  """
+  Filter by active status of the restaurant
+  """
+  isActive: Boolean
+  """
+  Filter by minimum average rating (e.g., 4.0)
+  """
+  minRating: Float
+  """
+  Filter by whether the restaurant supports reservations
+  """
+  hasReservations: Boolean
+}
+
+"""
+Input type for creating a new restaurant
+"""
 input RestaurantInput {
+  """
+  Name of the restaurant
+  """
   name: String!
+  """
+  URL-friendly unique identifier for the restaurant (e.g., "tasty-italian-bistro")
+  """
+  slug: String!
+  """
+  List of URLs to restaurant photos
+  """
+  photos: [String!]!
+  """
+  Address details of the restaurant
+  """
   address: RestaurantAddressInput!
-  cuisineType: String!
-  phoneNumber: String
+  """
+  Types of cuisine offered (e.g., ["Italian", "Vegan"])
+  """
+  cuisineType: [String!]!
+  """
+  Contact phone number of the restaurant
+  """
+  phoneNumber: String!
+  """
+  Contact email address of the restaurant
+  """
   email: String
+  """
+  Website URL of the restaurant
+  """
   website: String
+  """
+  Operating hours for each day of the week
+  """
+  operatingHours: [OperatingHoursInput!]!
+  """
+  Detailed description of the restaurant
+  """
+  description: String!
+  """
+  Short summary or tagline of the restaurant
+  """
+  subDescription: String!
+  """
+  List of recommended menu items
+  """
+  recommendedMenus: [MenuItemInput!]
+  """
+  List of available facilities (e.g., "Wi-Fi", "Parking")
+  """
+  facilities: [String!]
+  """
+  List of atmosphere descriptors (e.g., "Casual", "Romantic")
+  """
+  atmosphere: [String!]
+  """
+  List of languages spoken by staff (e.g., "English", "Thai")
+  """
+  serviceLanguages: [String!]
+  """
+  List of accepted payment methods (e.g., "Cash", "Credit Card")
+  """
+  paymentMethods: [String!]
+  """
+  URL for making reservations
+  """
+  reservationUrl: String
+}
+
+"""
+Input type for updating an existing restaurant
+"""
+input RestaurantUpdateInput {
+  """
+  Updated name of the restaurant
+  """
+  name: String
+  """
+  Updated list of URLs to restaurant photos
+  """
+  photos: [String!]
+  """
+  Updated address details of the restaurant
+  """
+  address: RestaurantAddressInput
+  """
+  Updated types of cuisine offered
+  """
+  cuisineType: [String!]
+  """
+  Updated contact phone number
+  """
+  phoneNumber: String
+  """
+  Updated contact email address
+  """
+  email: String
+  """
+  Updated website URL
+  """
+  website: String
+  """
+  Updated operating hours for each day
+  """
   operatingHours: [OperatingHoursInput!]
+  """
+  Updated detailed description
+  """
+  description: String
+  """
+  Updated short summary or tagline
+  """
+  subDescription: String
+  """
+  Updated list of recommended menu items
+  """
+  recommendedMenus: [MenuItemInput!]
+  """
+  Updated list of facilities
+  """
+  facilities: [String!]
+  """
+  Updated list of atmosphere descriptors
+  """
+  atmosphere: [String!]
+  """
+  Updated list of languages spoken by staff
+  """
+  serviceLanguages: [String!]
+  """
+  Updated list of accepted payment methods
+  """
+  paymentMethods: [String!]
+  """
+  Updated reservation URL
+  """
+  reservationUrl: String
 }
 
+"""
+Input type for restaurant address details
+"""
 input RestaurantAddressInput {
+  """
+  Street address of the restaurant
+  """
   street: String!
+  """
+  City where the restaurant is located
+  """
   city: String!
+  """
+  State or province of the restaurant
+  """
   state: String!
+  """
+  ZIP or postal code
+  """
   zipCode: String!
+  """
+  Country where the restaurant is located
+  """
   country: String!
-  latitude: Float
-  longitude: Float
+  """
+  Latitude coordinate for geolocation
+  """
+  latitude: Float!
+  """
+  Longitude coordinate for geolocation
+  """
+  longitude: Float!
 }
 
+"""
+Input type for defining operating hours of a restaurant
+"""
 input OperatingHoursInput {
+  """
+  Day of the week (e.g., MONDAY)
+  """
   dayOfWeek: DayOfWeek!
+  """
+  Opening time in HH:MM format (e.g., "09:00")
+  """
   openTime: String!
+  """
+  Closing time in HH:MM format (e.g., "22:00")
+  """
   closeTime: String!
+  """
+  Indicates if the restaurant is closed on this day
+  """
   isClosed: Boolean!
 }
 
-input RestaurantUpdateInput {
-  name: String
-  address: RestaurantAddressInput
-  cuisineType: String
-  phoneNumber: String
-  email: String
-  website: String
-  operatingHours: [OperatingHoursInput!]
-  isActive: Boolean
+"""
+Input type for a recommended menu item
+"""
+input MenuItemInput {
+  """
+  Name of the menu item
+  """
+  name: String!
+  """
+  Description of the menu item
+  """
+  description: String
+  """
+  Price of the menu item
+  """
+  price: Float!
+  """
+  URL to an image of the menu item
+  """
+  imageUrl: String
+  """
+  Indicates if the menu item is currently available
+  """
+  isAvailable: Boolean!
 }
 
-input RestaurantFilterInput {
-  q: String
-  limit: Int
-  offset: Int
+"""
+Input type for submitting a restaurant review
+"""
+input RestaurantReviewInput {
+  """
+  Name or username of the reviewer
+  """
+  name: String!
+  """
+  Rating given by the reviewer (1-5)
+  """
+  rating: Int!
+  """
+  Review comment or feedback
+  """
+  comment: String!
+  """
+  URL to the reviewer’s avatar image
+  """
+  avatarUrl: String!
+  """
+  Indicates if the reviewer has made a purchase (verified review)
+  """
+  isPurchased: Boolean!
+  """
+  List of URLs to attached photos or files
+  """
+  attachments: [String!]
 }

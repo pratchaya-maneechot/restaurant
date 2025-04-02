@@ -65,12 +65,12 @@ export const NoOperatingHours: StoryObj<typeof RestaurantCard> = {
 
 export const LowRating: StoryObj<typeof RestaurantCard> = {
   args: {
-    restaurant: { ...baseRestaurant, rating: 2 },
+    restaurant: { ...baseRestaurant, totalRatings: 2 },
   },
 };
 
 export const HighRating: StoryObj<typeof RestaurantCard> = {
   args: {
-    restaurant: { ...baseRestaurant, rating: 5 },
+    restaurant: { ...baseRestaurant, totalRatings: 5 },
   },
 };

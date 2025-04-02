@@ -25,6 +25,8 @@ export const paths = {
   },
   //
   restaurant: {
+    root: ROOTS.RESTAURANT,
     details: (slug = '') => `${ROOTS.RESTAURANT}/${slug}`,
+    edit: (id = '') => `${ROOTS.RESTAURANT}/${id}/edit`,
   },
 };

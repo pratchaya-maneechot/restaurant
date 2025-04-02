@@ -13,8 +13,7 @@ import Image from '@src/components/image';
 
 import { Rating } from '@mui/material';
 import { IRestaurant } from '@src/types/restaurant';
-import { useTranslate } from '../../locales';
-import { findTodayOperatingHours } from '../../utils/format-time';
+import { findTodayOperatingHours } from '@src/utils/format-time';
 
 // ----------------------------------------------------------------------
 
@@ -23,8 +22,7 @@ type Props = {
 };
 
 export default function RestaurantCard({ restaurant }: Props) {
-  const { id, name, photos, isActive, operatingHours, rating } = restaurant;
-  const { t } = useTranslate();
+  const { id, name, photos, isActive, operatingHours, totalRatings } = restaurant;
 
   const toDay = findTodayOperatingHours(operatingHours ?? []);
 
@@ -80,11 +78,11 @@ export default function RestaurantCard({ restaurant }: Props) {
         {name}
       </Link>
       <Stack direction={'row'} justifyContent={'space-between'} sx={{ typography: 'caption' }}>
-        {rating && rating > 3 && (
+        {totalRatings && totalRatings > 3 && (
           <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} spacing={0.5}>
-            <Rating defaultValue={rating ?? 0} max={1} size="small" />
+            <Rating defaultValue={totalRatings} max={1} size="small" />
             <Stack direction="row" spacing={0.5}>
-              {rating}
+              {totalRatings}
             </Stack>
           </Stack>
         )}

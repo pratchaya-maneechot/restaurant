@@ -1,4 +1,5 @@
 type OperationCompleted {
-  id: ID!
+  success: Boolean!
+  message: String
 }
 scalar DateTime

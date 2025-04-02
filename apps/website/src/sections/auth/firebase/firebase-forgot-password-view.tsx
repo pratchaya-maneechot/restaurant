@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 
-import LoadingButton from '@mui/lab/LoadingButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -16,6 +15,7 @@ import { paths } from '@src/routes/paths';
 import { PasswordIcon } from '@src/assets/icons';
 import { useAuthContext } from '@src/auth/hooks';
 
+import Button from '@mui/material/Button';
 import FormProvider, { RHFTextField } from '@src/components/hook-form';
 import Iconify from '@src/components/iconify';
 
@@ -63,9 +63,9 @@ export default function FirebaseForgotPasswordView() {
     <Stack spacing={3} alignItems="center">
       <RHFTextField name="email" label="Email address" />
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+      <Button fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
         Send Request
-      </LoadingButton>
+      </Button>
 
       <Link
         component={RouterLink}

@@ -75,7 +75,7 @@
     },
     "codegen": {
       "metadata": {
-        "cwd": "libs/auth"
+        "cwd": "apps/gateway-service"
       },
       "executor": "@restaurant/graphql-codegen:apollo-server"
     }
